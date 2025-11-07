@@ -6,7 +6,9 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "next lint",
+		"startup": "pwsh -File start.ps1",
+		"startup:bash": "bash start.sh"
 	},
 	"dependencies": {
 		"@babylonjs/core": "8.33.2",

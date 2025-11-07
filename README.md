@@ -2,7 +2,33 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+### Quick Start with Startup Script (Recommended)
+
+The easiest way to start the application with proper network configuration:
+
+**Windows (PowerShell):**
+```powershell
+.\start.ps1
+# or
+npm run startup
+```
+
+**Mac/Linux (Bash):**
+```bash
+./start.sh
+# or
+npm run startup:bash
+```
+
+The startup script will:
+- Auto-detect or prompt for backend location
+- Check backend connectivity
+- Display network addresses for VR headset access
+- Start the Next.js development server
+
+### Manual Start
+
+Alternatively, run the development server directly:
 
 ```bash
 npm run dev
@@ -10,11 +36,42 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+**For VR headset access:** Use your computer's network IP address instead of localhost (e.g., `http://192.168.1.100:3000`). The startup script displays these automatically.
+
+### Configuration
+
+Copy `.env.example` to `.env.local` and configure your backend URL:
+
+```bash
+cp .env.example .env.local
+```
+
+Edit `.env.local`:
+```
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+For detailed setup instructions including network scenarios and VR headset connectivity, see [STARTUP_GUIDE.md](./STARTUP_GUIDE.md).
+
+## Documentation
+
+### Getting Started
+- **[STARTUP_GUIDE.md](./STARTUP_GUIDE.md)** - Comprehensive startup guide with network setup, VR configuration, and troubleshooting
+- **[QUICK_START.md](./QUICK_START.md)** - Quick reference for common startup commands
+- **[specs/SETUP.md](./specs/SETUP.md)** - Complete developer onboarding and environment setup
+
+### Project Information
+- **[HANDOFF.md](./HANDOFF.md)** - Project handoff document with overview and next steps
+- **[PRIORITIZED_TASKS.md](./PRIORITIZED_TASKS.md)** - Phase-based development plan
+- **[GITHUB_ISSUES.md](./GITHUB_ISSUES.md)** - Detailed issue descriptions
+- **[specs/](./specs/)** - Full technical documentation (13 documents)
+
+### GitHub Issues
+View and track development: https://github.com/buddha314/beabodocl-babylon/issues
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

@@ -46,6 +46,7 @@ import { loadScene } from "babylonjs-editor-tools";
  */
 import { scriptsMap } from "@/scripts";
 import ApiTest from "@/components/ApiTest";
+import AgentChatTest from "@/components/AgentChatTest";
 import { ChatPanel3D } from "@/lib/ChatPanel3D";
 import { SceneErrorBoundary } from "@/components/ErrorBoundary";
 
@@ -182,6 +183,7 @@ export default function Home() {
 			/>
 		</SceneErrorBoundary>
 		<ApiTest />
+		<AgentChatTest />
 	</main>
 	);
 }

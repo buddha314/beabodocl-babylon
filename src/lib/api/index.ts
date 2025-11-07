@@ -8,3 +8,4 @@ export * from './types';
 export { apiClient } from './client';
 export { documentsApi } from './documents';
 export { statsApi } from './stats';
+export { agentApi } from './agent';

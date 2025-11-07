@@ -743,11 +743,63 @@ Issue #10-11 (Visualizations)
   └─→ Independent (can parallelize)
 
 Issue #12 (VR Performance)
-  └─→ Should complete before Issue #13-14
+  ├─→ Should complete before Issue #13-14
+  └─→ Related to Issue #9-10 (VR Controls)
 
 Issue #15 (Testing)
   └─→ Ongoing throughout phases
+
+Issue #9 (Confine Motion to Plane)
+  ├─→ Improves VR UX
+  └─→ Works with Issue #10
+
+Issue #10 (Player Strafing)
+  ├─→ Essential for VR navigation
+  └─→ Works with Issue #9
 ```
+
+---
+
+## New Issues Added
+
+### Issue #9: Confine User Motion to Horizontal Plane
+**GitHub:** https://github.com/buddha314/beabodocl-babylon/issues/9  
+**Priority:** P2 - Medium  
+**Effort:** 2-4 hours  
+**Description:** Restrict VR user movement to a horizontal plane (no vertical drift) for more natural ground-level navigation and reduced VR sickness.
+
+**Benefits:**
+- More natural walking simulation
+- Reduces VR motion sickness
+- Consistent ground reference
+- Better spatial orientation
+
+**Technical Approach:**
+- Y-axis position constraint in WebXR camera
+- Teleportation targets restricted to floor level
+- Configurable floor height setting
+
+### Issue #10: Enable Player Strafing on Left Joystick  
+**GitHub:** https://github.com/buddha314/beabodocl-babylon/issues/10  
+**Priority:** P1 - High  
+**Effort:** 3-5 hours  
+**Description:** Implement full directional movement (forward/backward/left/right strafe) using left joystick for smoother VR navigation.
+
+**Benefits:**
+- Natural FPS-style movement controls
+- Better maneuverability in VR
+- No need to physically turn for lateral movement
+- Industry-standard VR locomotion
+
+**Technical Approach:**
+- Custom VR movement system
+- Left thumbstick X/Y axis mapping
+- Movement relative to headset orientation
+- Deadzone and comfort options
+
+**Recommended Implementation Order:**
+1. Issue #10 (Strafing) - Higher priority, essential for navigation
+2. Issue #9 (Plane Constraint) - Complements strafing, improves comfort
 
 ---
 

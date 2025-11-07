@@ -3,9 +3,9 @@
 **Project**: Beabodocl-Babylon  
 **Date Created**: November 7, 2025  
 **Last Synchronized**: November 7, 2025  
-**Status**: ✅ Critical and High Priority Issues Created
+**Status**: ✅ Critical, High Priority, and VR Control Issues Created
 
-This document contains detailed GitHub issue descriptions. The critical (P0) and high priority (P1) issues have been created in the repository.
+This document contains detailed GitHub issue descriptions. The critical (P0), high priority (P1), and new VR control issues have been created in the repository.
 
 ## Created Issues
 
@@ -36,6 +36,10 @@ This document contains detailed GitHub issue descriptions. The critical (P0) and
 18. [Implement Knowledge Graph Visualization](#issue-18-implement-knowledge-graph-visualization)
 19. [Add Export Capabilities](#issue-19-add-export-capabilities)
 20. [Implement Progressive Web App](#issue-20-implement-progressive-web-app)
+
+### VR Controls & UX - To Be Created
+21. ✅ [Issue #9: Confine User Motion to Horizontal Plane](https://github.com/buddha314/beabodocl-babylon/issues/9)
+22. ✅ [Issue #10: Enable Player Strafing on Left Joystick](https://github.com/buddha314/beabodocl-babylon/issues/10)
 
 ---
 
@@ -1966,11 +1970,662 @@ When creating each issue on GitHub:
 
 ---
 
-**Total Issues**: 20  
-**Total Estimated Effort**: 280-400 hours  
+## Issue #9: Confine User Motion to Horizontal Plane
+
+**Labels:** `enhancement`, `vr`, `ux`, `medium-priority`  
+**Priority:** P2 - Medium  
+**Effort:** Small (2-4 hours)  
+**Milestone:** v0.4.0
+**GitHub:** https://github.com/buddha314/beabodocl-babylon/issues/9
+
+### Description
+
+In VR mode, users can currently move freely in all three dimensions, including up and down (Y-axis). For most research/document viewing scenarios, we want to confine user movement to a horizontal plane at a fixed height, similar to walking on a floor.
+
+### Current Behavior
+
+- Users can move in X, Y, and Z directions
+- Free-flying movement can be disorienting
+- No ground reference or constraints
+- Users can "fall" or "fly" unintentionally
+
+### Expected Behavior
+
+- User movement confined to horizontal plane (XZ plane)
+- Y-position stays constant during locomotion
+- Smooth, ground-level navigation
+- More natural, less disorienting VR experience
+- Head/camera still free to look up/down
+- **NavMesh defines walkable areas within the scene**
+
+### Technical Implementation
+
+#### Navigation Mesh (NavMesh) Required
+
+**A navigation mesh must be created to define walkable areas:**
+
+```typescript
+// src/lib/vr/navmesh.ts
+
+import { Scene, Mesh, Vector3 } from "@babylonjs/core";
+import { RecastJSPlugin } from "@babylonjs/core/Navigation/Plugins/recastJSPlugin";
+
+export class NavMeshSystem {
+  private navigationPlugin: RecastJSPlugin | null = null;
+  
+  async initialize(scene: Scene, walkableFloors: Mesh[]) {
+    // Load Recast.js navigation library
+    const recast = await import("recast-detour");
+    
+    // Create navigation plugin
+    this.navigationPlugin = new RecastJSPlugin(recast);
+    
+    // Create navmesh from floor meshes
+    const navmeshParameters = {
+      cs: 0.2,        // Cell size
+      ch: 0.2,        // Cell height
+      walkableSlopeAngle: 35,  // Max slope angle
+      walkableHeight: 2.0,     // Agent height
+      walkableClimb: 0.5,      // Max step height
+      walkableRadius: 0.5,     // Agent radius
+      maxEdgeLen: 12,
+      maxSimplificationError: 1.3,
+      minRegionArea: 8,
+      mergeRegionArea: 20,
+      maxVertsPerPoly: 6,
+      detailSampleDist: 6,
+      detailSampleMaxError: 1,
+    };
+    
+    // Build the navigation mesh
+    this.navigationPlugin.createNavMesh(walkableFloors, navmeshParameters);
+    
+    console.log("Navigation mesh created successfully");
+  }
+  
+  /**
+   * Check if a position is on the navmesh
+   */
+  isPositionOnNavMesh(position: Vector3): boolean {
+    if (!this.navigationPlugin) return false;
+    
+    const closestPoint = this.navigationPlugin.getClosestPoint(position);
+    const distance = Vector3.Distance(position, closestPoint);
+    
+    // Allow small tolerance for Y-axis variance
+    return distance < 0.5;
+  }
+  
+  /**
+   * Get the closest valid position on the navmesh
+   */
+  getClosestPointOnNavMesh(position: Vector3): Vector3 {
+    if (!this.navigationPlugin) return position;
+    return this.navigationPlugin.getClosestPoint(position);
+  }
+  
+  /**
+   * Compute a path between two points on the navmesh
+   */
+  computePath(start: Vector3, end: Vector3): Vector3[] {
+    if (!this.navigationPlugin) return [];
+    return this.navigationPlugin.computePath(start, end);
+  }
+  
+  /**
+   * Debug: Show the navmesh visually
+   */
+  showDebugMesh(scene: Scene) {
+    if (!this.navigationPlugin) return;
+    
+    const navmeshDebug = this.navigationPlugin.createDebugNavMesh(scene);
+    if (navmeshDebug) {
+      navmeshDebug.position = new Vector3(0, 0.01, 0); // Slightly above floor
+      const mat = new StandardMaterial("navmeshMat", scene);
+      mat.diffuseColor = new Color3(0, 1, 0);
+      mat.alpha = 0.3;
+      navmeshDebug.material = mat;
+    }
+  }
+}
+```
+
+#### WebXR Locomotion System
+
+**Update camera position constraints with navmesh validation:**
+```typescript
+// src/lib/vr/locomotion.ts
+
+export class LocomotionSystem {
+  private readonly FLOOR_HEIGHT = 1.6; // Average eye height in meters
+  private navMesh: NavMeshSystem;
+  
+  constructor(
+    private scene: Scene, 
+    private xr: WebXRDefaultExperience,
+    navMesh: NavMeshSystem
+  ) {
+    this.navMesh = navMesh;
+    this.setupTeleportation();
+    this.constrainMovement();
+  }
+  
+  private constrainMovement() {
+    // Store initial Y position
+    const initialY = this.xr.baseExperience.camera.position.y || this.FLOOR_HEIGHT;
+    
+    // Constrain on every frame
+    this.scene.onBeforeRenderObservable.add(() => {
+      if (this.xr.baseExperience.state === WebXRState.IN_XR) {
+        const camera = this.xr.baseExperience.camera;
+        
+        // Keep Y position constant
+        camera.position.y = initialY;
+        
+        // Ensure position is on navmesh
+        const currentPos = camera.position.clone();
+        currentPos.y = 0; // Check XZ position only
+        
+        if (!this.navMesh.isPositionOnNavMesh(currentPos)) {
+          // Snap back to nearest valid position on navmesh
+          const validPos = this.navMesh.getClosestPointOnNavMesh(currentPos);
+          camera.position.x = validPos.x;
+          camera.position.z = validPos.z;
+        }
+      }
+    });
+  }
+  
+  private setupTeleportation() {
+    const featuresManager = this.xr.baseExperience.featuresManager;
+    
+    // Enable teleportation (horizontal only)
+    const teleportation = featuresManager.enableFeature(
+      WebXRFeatureName.TELEPORTATION,
+      "stable",
+      {
+        floorMeshes: this.getFloorMeshes(),
+        xrInput: this.xr.input,
+        snapPositions: this.getSnapPositions(),
+      }
+    );
+    
+    // Ensure teleportation respects floor height and navmesh
+    if (teleportation) {
+      teleportation.attach();
+      teleportation.onTargetMeshPositionUpdatedObservable.add((newPosition) => {
+        newPosition.y = this.FLOOR_HEIGHT;
+        
+        // Validate teleport target is on navmesh
+        if (!this.navMesh.isPositionOnNavMesh(newPosition)) {
+          const validPos = this.navMesh.getClosestPointOnNavMesh(newPosition);
+          newPosition.x = validPos.x;
+          newPosition.z = validPos.z;
+        }
+      });
+    }
+  }
+  
+  private getFloorMeshes(): Mesh[] {
+    // Return floor meshes for teleportation
+    return this.scene.meshes.filter(m => m.name.includes("floor")) as Mesh[];
+  }
+}
+```
+
+**Update in page.tsx:**
+```typescript
+// src/app/page.tsx
+
+const handleWebXRInit = async (scene: Scene) => {
+  // Create floor/ground meshes first
+  const ground = MeshBuilder.CreateGround("ground", { width: 20, height: 20 }, scene);
+  
+  // Initialize navigation mesh
+  const navMeshSystem = new NavMeshSystem();
+  await navMeshSystem.initialize(scene, [ground]);
+  
+  // Optional: Show navmesh for debugging
+  if (process.env.NODE_ENV === "development") {
+    navMeshSystem.showDebugMesh(scene);
+  }
+  
+  const xr = await scene.createDefaultXRExperienceAsync({
+    floorMeshes: [ground],
+    disableTeleportation: false,
+  });
+  
+  // Add locomotion constraints with navmesh
+  const locomotion = new LocomotionSystem(scene, xr, navMeshSystem);
+  
+  return xr;
+};
+```
+
+### NavMesh Benefits
+
+- **Walkable Area Definition:** Clearly defines where users can walk
+- **Collision Prevention:** Prevents walking through walls or off edges
+- **Pathfinding:** Enables AI navigation and guided tours
+- **Multi-level Support:** Handles stairs, ramps, and platforms
+- **Performance:** Efficient spatial queries for position validation
+
+### Scene Requirements
+
+The scene must include:
+- [ ] Ground/floor meshes marked as walkable
+- [ ] Proper mesh colliders for walls/obstacles
+- [ ] NavMesh baked from walkable surfaces
+- [ ] Optional: Multiple NavMesh areas for different zones
+- [ ] Optional: Off-mesh links for jumps/teleports
+
+### Alternative Approaches
+
+#### Option 1: Teleportation Only
+- Disable smooth locomotion
+- Only allow teleportation to ground level
+- Most common in VR apps
+
+#### Option 2: Gravity Simulation
+- Apply simple gravity physics
+- User "falls" to ground if in air
+- More realistic but more complex
+
+#### Option 3: Configurable
+- Allow users to toggle free flight vs. grounded
+- Best of both worlds
+- Add setting in UI
+
+### Tasks
+
+#### Phase 1: NavMesh Setup (1-2 hours)
+- [ ] Install Recast.js navigation library
+- [ ] Create NavMeshSystem class
+- [ ] Define walkable floor meshes in scene
+- [ ] Configure navmesh parameters
+- [ ] Build navigation mesh from scene geometry
+- [ ] Add navmesh debug visualization
+- [ ] Test navmesh coverage of walkable areas
+
+#### Phase 2: Locomotion Integration (1-2 hours)
+- [ ] Create LocomotionSystem class
+- [ ] Implement Y-axis constraint
+- [ ] Integrate navmesh position validation
+- [ ] Update WebXR initialization with navmesh
+- [ ] Set appropriate floor height (1.6m default)
+- [ ] Constrain teleportation to navmesh
+- [ ] Test smooth locomotion stays on navmesh
+- [ ] Add user preference setting
+- [ ] Update documentation
+- [ ] Test on Quest headsets
+
+### Dependencies
+
+**Required:**
+- Recast.js library for navigation mesh
+- Ground/floor meshes in the scene
+- Babylon.js Navigation plugin
+
+**Installation:**
+```bash
+npm install recast-detour
+```
+
+### User Experience
+
+**Before:**
+- User can accidentally drift up or down
+- Disorienting floating sensation
+- No consistent ground reference
+
+**After:**
+- Stable, ground-level movement
+- Natural walking simulation
+- Consistent spatial reference
+- Less VR sickness
+
+### Performance Impact
+
+- NavMesh queries: ~0.1ms per frame (negligible)
+- Simple Y-coordinate constraint per frame
+- No additional rendering overhead (except debug visualization)
+- Should maintain 90 FPS target
+- NavMesh built once at scene load
+
+### Acceptance Criteria
+
+- [ ] Navigation mesh successfully created from scene geometry
+- [ ] User movement constrained to horizontal plane in VR
+- [ ] User cannot walk through walls or off edges (navmesh boundaries)
+- [ ] Y-position remains constant during locomotion
+- [ ] Teleportation targets stay at floor level and on navmesh
+- [ ] Head tracking still allows looking up/down
+- [ ] No performance degradation (<90 FPS in VR)
+- [ ] Works on Quest 2/3 and desktop VR
+- [ ] Configurable floor height
+- [ ] Smooth, no jittering
+- [ ] Debug visualization available in development mode
+
+### Testing Scenarios
+
+- [ ] Test navmesh creation with simple floor
+- [ ] Test navmesh creation with complex multi-room scene
+- [ ] Test smooth locomotion in VR stays on navmesh
+- [ ] Test teleportation respects navmesh boundaries
+- [ ] Test walking towards walls (should be blocked)
+- [ ] Test walking off edges (should be blocked)
+- [ ] Test on uneven terrain (stairs, ramps)
+- [ ] Test with different floor heights
+- [ ] Test head movement (should work normally)
+- [ ] Verify no motion sickness increase
+- [ ] Performance test with large navmesh
+
+### Related Issues
+
+- Issue #12 (VR Performance Optimization)
+- Issue #10 (Player Strafing)
+
+### References
+
+- [WebXR Locomotion](https://www.babylonjs-playground.com/#9K3MRA)
+- [Babylon.js WebXR Docs](https://doc.babylonjs.com/features/featuresDeepDive/webXR)
+- [Babylon.js Navigation Mesh](https://doc.babylonjs.com/features/featuresDeepDive/crowdNavigation/navigationIntro)
+- [Recast Navigation](https://github.com/recastnavigation/recastnavigation)
+- [Crowd Navigation Demo](https://www.babylonjs-playground.com/#X5XHAX)
+
+---
+
+## Issue #10: Enable Player Strafing on Left Joystick
+
+**Labels:** `enhancement`, `vr`, `high-priority`  
+**Priority:** P1 - High  
+**Effort:** Small (3-5 hours)  
+**Milestone:** v0.3.0
+**GitHub:** https://github.com/buddha314/beabodocl-babylon/issues/10
+
+### Description
+
+Implement full directional movement (forward/backward/left/right strafe) using the left joystick on VR controllers, providing more natural and flexible locomotion.
+
+### Current Behavior
+
+- Left joystick may only move forward/backward
+- No lateral (strafing) movement
+- Limited mobility and navigation
+- Users must physically turn or rotate camera to move sideways
+
+### Expected Behavior
+
+- Left joystick Y-axis: Forward/Backward movement
+- Left joystick X-axis: Left/Right strafing
+- Smooth, responsive controls
+- Direction relative to headset orientation
+- Similar to FPS game controls
+
+### User Story
+
+> As a VR user, I want to strafe left/right using the left joystick, so I can navigate the environment smoothly without having to physically turn my body or use snap turning.
+
+### Technical Implementation
+
+#### WebXR Movement Feature
+
+**Create custom movement system:**
+```typescript
+// src/lib/vr/movement.ts
+
+import { WebXRAbstractMotionController } from "@babylonjs/core/XR";
+import { Scene } from "@babylonjs/core";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+
+export class VRMovementSystem {
+  private movementSpeed = 2.0; // meters per second
+  private readonly DEADZONE = 0.15; // Joystick deadzone
+  
+  constructor(
+    private scene: Scene,
+    private xr: WebXRDefaultExperience
+  ) {
+    this.setupMovementControls();
+  }
+  
+  private setupMovementControls() {
+    // Get left controller
+    this.xr.input.onControllerAddedObservable.add((controller) => {
+      if (controller.inputSource.handedness === "left") {
+        this.attachMovementToController(controller);
+      }
+    });
+  }
+  
+  private attachMovementToController(controller: WebXRInputSource) {
+    const motionController = controller.motionController;
+    if (!motionController) return;
+    
+    // Get thumbstick component
+    const thumbstick = motionController.getComponent("xr-standard-thumbstick");
+    if (!thumbstick) return;
+    
+    // Update movement every frame
+    this.scene.onBeforeRenderObservable.add(() => {
+      if (thumbstick.axes) {
+        const xAxis = thumbstick.axes.x; // Left/Right strafe
+        const yAxis = thumbstick.axes.y; // Forward/Backward
+        
+        this.applyMovement(xAxis, yAxis);
+      }
+    });
+  }
+  
+  private applyMovement(xInput: number, yInput: number) {
+    // Apply deadzone
+    if (Math.abs(xInput) < this.DEADZONE) xInput = 0;
+    if (Math.abs(yInput) < this.DEADZONE) yInput = 0;
+    
+    if (xInput === 0 && yInput === 0) return;
+    
+    const camera = this.xr.baseExperience.camera;
+    const deltaTime = this.scene.getEngine().getDeltaTime() / 1000;
+    
+    // Get camera forward direction (projected on XZ plane)
+    const forward = camera.getForwardRay().direction.clone();
+    forward.y = 0; // Remove vertical component
+    forward.normalize();
+    
+    // Get camera right direction
+    const right = Vector3.Cross(Vector3.Up(), forward).normalize();
+    
+    // Calculate movement vector
+    const moveVector = forward.scale(-yInput) // Forward/backward (inverted)
+      .add(right.scale(xInput)); // Left/right strafe
+    
+    // Apply movement
+    const speed = this.movementSpeed * deltaTime;
+    camera.position.addInPlace(moveVector.scale(speed));
+  }
+  
+  public setSpeed(speed: number) {
+    this.movementSpeed = speed;
+  }
+  
+  public getSpeed(): number {
+    return this.movementSpeed;
+  }
+}
+```
+
+**Integrate into scene:**
+```typescript
+// src/app/page.tsx
+
+const initVR = async (scene: Scene) => {
+  const xr = await scene.createDefaultXRExperienceAsync({
+    floorMeshes: [ground],
+    disableTeleportation: false, // Keep teleportation as alternative
+  });
+  
+  // Disable default locomotion if it exists
+  const locomotionFeature = xr.baseExperience.featuresManager.getEnabledFeature(
+    WebXRFeatureName.MOVEMENT
+  );
+  if (locomotionFeature) {
+    locomotionFeature.detach();
+  }
+  
+  // Add custom movement system
+  const movement = new VRMovementSystem(scene, xr);
+  
+  // Optional: Add speed control UI
+  movement.setSpeed(2.0); // 2 m/s default
+  
+  return xr;
+};
+```
+
+### Control Mapping
+
+**Left Controller (Quest/Index/etc):**
+```
+Thumbstick:
+  ↑ (Y+)  → Move Forward
+  ↓ (Y-)  → Move Backward
+  ← (X-)  → Strafe Left
+  → (X+)  → Strafe Right
+  
+  Diagonal: Combined movement
+```
+
+**Right Controller:**
+```
+Thumbstick:
+  ← → → Snap Turn (optional)
+  ↑ ↓  → Reserved for UI navigation
+```
+
+### Advanced Features (Optional)
+
+#### Sprint/Walk Toggle
+```typescript
+// Hold trigger while moving for sprint
+private isSprintPressed = false;
+
+const trigger = motionController.getComponent("xr-standard-trigger");
+trigger?.onButtonStateChangedObservable.add((component) => {
+  this.isSprintPressed = component.pressed;
+});
+
+// In applyMovement:
+const speedMultiplier = this.isSprintPressed ? 2.0 : 1.0;
+const speed = this.movementSpeed * speedMultiplier * deltaTime;
+```
+
+#### Smooth vs. Snap Turning
+```typescript
+// Right thumbstick for smooth or snap rotation
+private setupRotationControls(controller: WebXRInputSource) {
+  const thumbstick = controller.motionController.getComponent("xr-standard-thumbstick");
+  
+  thumbstick.onAxisValueChangedObservable.add((axes) => {
+    if (Math.abs(axes.x) > this.DEADZONE) {
+      // Smooth turn
+      const rotationSpeed = 90; // degrees per second
+      const deltaTime = this.scene.getEngine().getDeltaTime() / 1000;
+      this.xr.baseExperience.camera.rotation.y += 
+        axes.x * rotationSpeed * deltaTime * (Math.PI / 180);
+    }
+  });
+}
+```
+
+### Tasks
+
+- [ ] Create VRMovementSystem class
+- [ ] Implement joystick input reading
+- [ ] Calculate strafe direction relative to headset
+- [ ] Apply deadzone to prevent drift
+- [ ] Smooth movement interpolation
+- [ ] Add configurable movement speed
+- [ ] Optional: Add sprint functionality
+- [ ] Optional: Add smooth turning on right stick
+- [ ] Test on Quest 2/3
+- [ ] Test on Index/Vive
+- [ ] Add comfort options (vignette during movement)
+- [ ] Update documentation
+
+### Comfort Options
+
+For users prone to VR motion sickness:
+
+```typescript
+// Vignette during movement
+private applyComfortVignette(isMoving: boolean) {
+  if (isMoving && this.comfortModeEnabled) {
+    // Reduce FOV during movement
+    this.addVignetteEffect(0.3); // 30% darkening around edges
+  } else {
+    this.removeVignetteEffect();
+  }
+}
+```
+
+### Performance Considerations
+
+- Lightweight: Simple vector math per frame
+- No physics calculations needed
+- Should not impact 90 FPS target
+- Minimal CPU overhead
+
+### Acceptance Criteria
+
+- [ ] Left thumbstick controls forward/back/strafe
+- [ ] Movement direction relative to headset orientation
+- [ ] Smooth, responsive controls (no lag)
+- [ ] Deadzone prevents unwanted drift
+- [ ] Movement speed is comfortable (not too fast/slow)
+- [ ] Works with Y-axis constraint (Issue #21)
+- [ ] No performance impact
+- [ ] Works on Quest 2/3
+- [ ] Works on PC VR (Index, Vive, etc.)
+- [ ] Optional comfort features available
+
+### Testing Scenarios
+
+- [ ] Test all 8 directions (N, S, E, W, NE, NW, SE, SW)
+- [ ] Test diagonal movement smoothness
+- [ ] Test deadzone (release stick should stop movement)
+- [ ] Test while rotating head
+- [ ] Test movement speed feels natural
+- [ ] Test with plane constraint (Issue #21)
+- [ ] Test for motion sickness (comfort)
+- [ ] Verify no jittering or stuttering
+
+### User Feedback
+
+Collect feedback on:
+- Movement speed preference
+- Deadzone size
+- Need for sprint feature
+- Comfort options effectiveness
+
+### Related Issues
+
+- Issue #9 (Confine User Motion to Plane)
+- Issue #12 (VR Performance Optimization)
+- Issue #17 (Voice Commands for VR)
+
+### References
+
+- [WebXR Input Profiles](https://github.com/immersive-web/webxr-input-profiles)
+- [Babylon.js XR Controller Input](https://doc.babylonjs.com/features/featuresDeepDive/webXR/webXRSelectedFeatures#controller-input)
+- [VR Locomotion Best Practices](https://developer.oculus.com/resources/locomotion-design/)
+
+---
+
+**Total Issues**: 22  
+**Total Estimated Effort**: 285-409 hours  
 **Critical Issues**: 3  
-**High Priority Issues**: 5  
-**Medium Priority Issues**: 7  
+**High Priority Issues**: 6  
+**Medium Priority Issues**: 8  
 **Low Priority Issues**: 5
 
 **Last Updated**: November 7, 2025

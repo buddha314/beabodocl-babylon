@@ -131,6 +131,37 @@ export interface AgentTask {
   updated_at: string;
 }
 
+export interface ChatMessage {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+  timestamp?: string;
+}
+
+export interface ChatRequest {
+  message: string;
+  conversation_id?: string;
+  context?: {
+    document_ids?: string[];
+    max_tokens?: number;
+    temperature?: number;
+  };
+}
+
+export interface ChatResponse {
+  message: string;
+  conversation_id: string;
+  sources?: {
+    document_id: string;
+    title: string;
+    relevance_score: number;
+  }[];
+  metadata?: {
+    model?: string;
+    tokens_used?: number;
+    processing_time_ms?: number;
+  };
+}
+
 // Error Types
 export interface ApiError {
   detail: string;

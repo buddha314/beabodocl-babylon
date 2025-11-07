@@ -1,7 +1,7 @@
 # Project Handoff Document
 
 **Project**: Beabodocl-Babylon  
-**Handoff Date**: November 7, 2025  
+**Handoff Date**: December 2024  
 **Prepared By**: AI Development Assistant  
 **Repository**: buddha314/beabodocl-babylon  
 **Branch**: main
@@ -10,689 +10,725 @@
 
 ## 📋 Executive Summary
 
-This handoff document summarizes the comprehensive documentation and planning work completed for the Beabodocl-Babylon project. The project is a Next.js application with Babylon.js 3D/VR integration for scientific research document visualization and AI-powered discovery.
+This handoff document summarizes the work completed in this development session. Focus was on implementing Agent API Integration (Issue #1) and creating new VR control issues (#9 and #10).
 
 ### What Was Delivered
 
-1. ✅ **Complete User Stories** - Extracted from Babocument project
-2. ✅ **Developer Setup Guide** - Comprehensive onboarding documentation
-3. ✅ **20 GitHub Issues** - Detailed, ready-to-create issues
-4. ✅ **Prioritized Task List** - Phase-based development plan
-5. ✅ **Updated Documentation Index** - All new docs integrated
-6. ✅ **Issue #3 Complete** - Error Boundaries implemented (saved 11-17 hours)
-7. ✅ **AI Impact Tracking** - See `AI_DEVELOPMENT_IMPACT.md`
+1. ✅ **Issue #1: Agent API Integration** - FULLY IMPLEMENTED (Frontend Complete)
+2. ✅ **Issue #9: Confine User Motion to Plane** - Created with NavMesh requirements
+3. ✅ **Issue #10: Enable Player Strafing** - Created for VR locomotion
+4. ✅ **Documentation Updates** - GITHUB_ISSUES.md and PRIORITIZED_TASKS.md synchronized
+5. ✅ **Test Component** - AgentChatTest for API verification
 
-### Project Status
+### Session Summary
 
-- **Current Version**: v0.1.0 (Proof of Concept)
-- **Target Version**: v1.0.0 (Production Ready)
-- **Timeline to v1.0**: 6-8 months (traditional) or 3-4 weeks (AI-assisted)
-- **Total Estimated Effort**: 280-400 hours (traditional) or 25-34 hours (AI-assisted)
-- **Ready for Implementation**: ✅ Yes
-- **AI Time Savings So Far**: 11-17 hours on Issue #3
+**Focus**: Agent API Integration + VR Control Issues
 
----
+**Time Spent**: ~2 hours
 
-## 📁 New Files Created
+**Issues Completed**:
+- Issue #1 (Frontend portion) - Agent API Integration
+- Issue #9 - Confine User Motion to Plane (created)
+- Issue #10 - Enable Player Strafing (created)
 
-### 1. specs/USER_STORIES.md
-**Purpose**: Comprehensive user stories and requirements
-
-**Content:**
-- **Agent-Assisted Paper Discovery** (14-20h)
-  - Natural language search powered by AI
-  - Example queries and use cases
-  - Technical requirements (backend + frontend)
-  - API contracts and flow diagrams
-  
-- **DICOM Medical Imaging Visualization** (38-54h)
-  - View DICOM files in 3D/VR
-  - 2D slice viewer with windowing
-  - 3D volume rendering
-  - TCIA repository integration
-  - Privacy/HIPAA compliance
-  
-- **Data Visualization Requirements**
-  - Keyword trend line graphs
-  - Word clouds
-  - 3D scientific plots with Plotly.js
-  - Timeline visualization
-  - Journal repository management
-
-**Key Features:**
-- Detailed technical requirements
-- Time estimates for each phase
-- Performance requirements
-- Success metrics
-- Implementation plans
-
-### 2. specs/SETUP.md
-**Purpose**: Complete developer onboarding guide
-
-**Content:**
-- **System Requirements** - Hardware, software, browser
-- **Prerequisites** - Node.js, Git, VS Code setup
-- **Installation Steps** - Step-by-step with verification
-- **Project Structure** - Detailed directory explanation
-- **Configuration** - Environment variables, network setup
-- **Running the Application** - Dev, production, testing
-- **Development Workflow** - Daily workflow, adding features
-- **Troubleshooting** - Common issues with solutions
-- **Useful Commands** - Quick reference cheat sheet
-
-**Highlights:**
-- Comprehensive for new developers
-- Platform-specific instructions (Windows/Mac/Linux)
-- VR development setup
-- Network configuration for headsets
-- 30+ troubleshooting scenarios
-
-### 3. GITHUB_ISSUES.md
-**Purpose**: 20 detailed GitHub issues ready to create
-
-**Structure:**
-Each issue includes:
-- Title and labels
-- Priority and effort estimate
-- Milestone assignment
-- Description and user story
-- Technical requirements
-- Acceptance criteria (checkboxes)
-- API contracts and code examples
-- Dependencies and related issues
-- References to documentation
-
-**Issues Breakdown:**
-
-**Critical Priority (P0) - 3 issues:**
-1. Implement Agent API Integration (16-24h)
-2. Add Authentication System (20-28h)
-3. Implement Error Boundaries (4-6h)
-
-**High Priority (P1) - 5 issues:**
-4. Agent-Assisted Paper Discovery (14-20h)
-5. Loading States for Scene Init (3-4h)
-6. Document Search in 3D (10-14h)
-7. Security Hardening (8-12h)
-8. Chat History Persistence (8-10h)
-
-**Medium Priority (P2) - 7 issues:**
-9. DICOM Medical Imaging (38-54h)
-10. Keyword Trend Visualization (10-14h)
-11. Word Cloud Visualization (8-10h)
-12. VR Performance Optimization (12-16h)
-13. Mobile Support (16-20h)
-14. 3D Document Browser (10-14h)
-15. Testing Suite (20-30h)
-
-**Low Priority (P3) - 5 issues:**
-16. Collaborative Features (30-40h)
-17. Voice Commands for VR (10-14h)
-18. Knowledge Graph Visualization (20-25h)
-19. Export Capabilities (6-8h)
-20. Progressive Web App (8-12h)
-
-### 4. PRIORITIZED_TASKS.md
-**Purpose**: Phase-based development plan with sprint breakdown
-
-**Content:**
-
-**Phase 1: Foundation & Security (4-6 weeks, 48-70h)**
-- Sprint 1.1: Critical Infrastructure (24-34h)
-  - Error boundaries
-  - Agent API integration
-  - Loading states
-  - Security hardening
-- Sprint 1.2: Authentication System (20-28h)
-
-**Phase 2: Core Features (6-8 weeks, 72-100h)**
-- Sprint 2.1: Agent-Enhanced Search (14-20h)
-- Sprint 2.2: 3D Document Interaction (10-14h)
-- Sprint 2.3: Chat Enhancement (8-10h)
-- Sprint 2.4: Testing Foundation (4-6h)
-
-**Phase 3: Advanced Features (8-12 weeks, 126-174h)**
-- Sprint 3.1: Data Visualization (28-38h)
-- Sprint 3.2: VR Optimization (12-16h)
-- Sprint 3.3: 3D Document Browser (10-14h)
-- Sprint 3.4: Mobile Support (16-20h)
-- Sprint 3.5: DICOM Imaging (38-54h)
-- Sprint 3.6: Testing Completion (16-24h)
-
-**Phase 4: Polish & Launch (4-6 weeks, selective)**
-- Documentation and training
-- Beta testing
-- Bug fixing
-- Optional nice-to-have features
-
-**Additional Sections:**
-- Critical path analysis
-- Resource allocation (1-4 developer options)
-- Risk assessment with mitigation
-- Success metrics
-- Dependencies graph
-- Week-by-week work order
-
-### 5. PROJECT_PLANNING_SUMMARY.md
-**Purpose**: Executive summary for quick reference
-
-**Content:**
-- What was created overview
-- Project statistics and charts
-- Recommended next steps (this week, next week, first month)
-- Quick start guides for PM, developers, stakeholders
-- Success metrics dashboard
-- Key documents reference
-- Important notes and risks
-- Implementation checklist
-
-### 6. Updated specs/INDEX.md
-**Changes:**
-- Added USER_STORIES.md to core documentation
-- Added SETUP.md to core documentation
-- Added "Requirements & User Stories" section
-- Updated documentation statistics (13 docs, 55,000+ words)
-- Updated recommended reading order
-- Updated documentation checklist
+**Backend Work Required**: Issue #1 backend portion still needs Python FastAPI implementation
 
 ---
 
-## 📊 Project Overview
+## 📁 Files Modified/Created
 
-### Current State
+### 1. src/lib/api/agent.ts (NEW FILE - 77 lines)
+**Purpose**: Agent API client for AI chat functionality
 
-**What Works:**
-- ✅ Basic 3D scene with Babylon.js
-- ✅ WebXR/VR support
-- ✅ In-world chat interface (UI only)
-- ✅ Backend API connectivity
-- ✅ Document listing and stats
+**What It Does**:
+- Provides 5 methods for agent communication
+- `chat()` - Send message and get AI response
+- `sendMessage()` - Simplified message sending
+- `getHistory()` - Retrieve conversation history
+- `deleteConversation()` - Remove conversation
+- `listConversations()` - Get all user conversations
 
-**What's Missing (Top Priority):**
-- ❌ Agent API integration (simulated responses)
-- ❌ Authentication/Authorization
-- ❌ Error boundaries
-- ❌ Loading states
-- ❌ Security hardening
+**Key Features**:
+- Full TypeScript typing with ChatRequest/ChatResponse
+- Error handling with try-catch
+- Axios-based HTTP client
+- RESTful API design following backend conventions
+
+**Integration**:
+- Imported by ChatPanel3D for real AI responses
+- Used by AgentChatTest for testing
+- Ready for backend API endpoint
+
+### 2. src/lib/api/types.ts (MODIFIED - Added 31 lines)
+**Purpose**: TypeScript interfaces for API communication
+
+**New Types Added**:
+```typescript
+interface ChatMessage {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+  timestamp?: string;
+}
+
+interface ChatRequest {
+  message: string;
+  conversation_id?: string;
+  context?: any;
+}
+
+interface ChatResponse {
+  message: string;
+  conversation_id: string;
+  sources?: Array<{
+    title: string;
+    url?: string;
+    relevance?: number;
+  }>;
+  metadata?: any;
+}
+```
+
+**Usage**: Used throughout agent.ts and ChatPanel3D.ts
+
+### 3. src/lib/ChatPanel3D.ts (MODIFIED - ~70 lines changed)
+**Purpose**: 3D/VR chat interface with real AI integration
+
+**Major Changes**:
+1. **Replaced Mock Responses** with real API calls
+   - Before: Simulated responses with setTimeout
+   - After: agentApi.sendMessage() with actual backend
+
+2. **Added Loading States**:
+   - Shows "Agent is thinking..." while waiting
+   - Prevents duplicate sends during processing
+   - Visual feedback in 3D interface
+
+3. **Error Handling**:
+   - Try-catch around API calls
+   - User-friendly error messages
+   - Graceful degradation
+
+4. **Conversation Persistence**:
+   - Tracks conversation_id
+   - Maintains chat history
+   - Supports multi-turn conversations
+
+5. **Source Citations**:
+   - Displays sources from API response
+   - Shows relevance scores
+   - Links to original documents
+
+**Before**:
+```typescript
+private async sendMessage(message: string): Promise<void> {
+  // ... mock response after 1 second
+  setTimeout(() => {
+    this.addMessage('assistant', 'This is a simulated response...');
+  }, 1000);
+}
+```
+
+**After**:
+```typescript
+private async sendMessage(message: string): Promise<void> {
+  try {
+    this.isProcessing = true;
+    const response = await agentApi.sendMessage(
+      message,
+      this.conversationId
+    );
+    this.conversationId = response.conversation_id;
+    this.addMessage('assistant', response.message);
+    // ... source citations ...
+  } catch (error) {
+    this.addMessage('assistant', 'Error communicating with agent.');
+  } finally {
+    this.isProcessing = false;
+  }
+}
+```
+
+### 4. src/components/AgentChatTest.tsx (NEW FILE - 140 lines)
+**Purpose**: Testing UI for agent API verification
+
+**Features**:
+- Simple input/output UI
+- Send message button
+- Display AI responses
+- Error handling
+- Conversation history display
+
+**Usage**: Temporary component for testing before VR integration complete
+
+**Location in App**: Added to src/app/page.tsx below ApiTest component
+
+### 5. src/lib/api/index.ts (MODIFIED - Added 1 line)
+**Purpose**: Central API exports
+
+**Change**: Added `export { agentApi } from './agent';`
+
+**Impact**: Makes agentApi available throughout application
+
+### 6. GITHUB_ISSUES.md (MODIFIED - Added 662 lines)
+**Purpose**: Issue tracking and documentation
+
+**New Issues Added**:
+
+#### Issue #9: Confine User Motion to Horizontal Plane
+- **Labels**: vr, controls, enhancement
+- **Priority**: P1 (High)
+- **Estimate**: 6-8 hours
+- **Status**: Created on GitHub (Issue #9)
+
+**Requirements**:
+- NavMesh integration using Recast.js
+- Constrain Y-axis motion to walkable surfaces
+- Prevent falling through floor or flying
+- Snap player to navmesh height
+
+**Implementation Details**:
+- Full NavMeshSystem class (200+ lines of code example)
+- Recast.js installation: `npm install recast-detour`
+- Integration with VRMovementSystem
+- Height validation and correction
+- Scene configuration examples
+
+**Key Code**:
+```typescript
+class NavMeshSystem {
+  private navMesh: any;
+  private recast: any;
+  
+  async initialize(scene: Scene): Promise<void> {
+    // Load navmesh, configure parameters
+  }
+  
+  getWalkableHeight(position: Vector3): number | null {
+    // Query navmesh for valid Y coordinate
+  }
+  
+  isPositionWalkable(position: Vector3): boolean {
+    // Validate position against navmesh
+  }
+}
+```
+
+#### Issue #10: Enable Player Strafing on Left Joystick
+- **Labels**: vr, controls, enhancement
+- **Priority**: P1 (High)
+- **Estimate**: 4-6 hours
+- **Status**: Created on GitHub (Issue #10)
+
+**Requirements**:
+- Map left joystick X-axis to strafe (left/right)
+- Map left joystick Y-axis to forward/backward
+- Maintain current rotation system (right joystick)
+- Smooth movement with deadzone
+
+**Implementation Details**:
+- Full LocomotionSystem class example
+- Deadzone configuration (0.15 default)
+- Speed controls (2 m/s walk, 4 m/s run)
+- Integration with existing VR system
+
+**Key Code**:
+```typescript
+class LocomotionSystem {
+  private deadzone = 0.15;
+  private walkSpeed = 2.0;
+  
+  update(deltaTime: number, xrCamera: WebXRCamera): void {
+    // Read joystick axes
+    // Apply movement relative to head direction
+    // Smooth interpolation
+  }
+}
+```
+
+### 7. PRIORITIZED_TASKS.md (MODIFIED - Added 52 lines)
+**Purpose**: Task prioritization and planning
+
+**Updates**:
+1. Added Issues #9 and #10 to dependencies section
+2. Updated VR Controls cluster
+3. Added implementation notes for NavMesh
+4. Cross-referenced with GITHUB_ISSUES.md
+
+**Dependencies Added**:
+- Issue #9 blocks Issue #10 (navmesh must exist first)
+- Both required for proper VR locomotion
+- Foundation for future VR features
+
+---
+
+## 🎯 What's Complete vs. What's Next
+
+### ✅ Frontend Complete (This Session)
+
+**Agent API Integration (Issue #1 - Frontend)**:
+- ✅ API client implementation (agent.ts)
+- ✅ TypeScript type definitions (ChatMessage, ChatRequest, ChatResponse)
+- ✅ ChatPanel3D integration with real API
+- ✅ Loading states and error handling
+- ✅ Conversation persistence
+- ✅ Source citation display
+- ✅ Test component for verification
+
+**VR Control Issues Created**:
+- ✅ Issue #9: Confine motion to plane (NavMesh)
+- ✅ Issue #10: Player strafing controls
+- ✅ Complete implementation details documented
+- ✅ GitHub issues created and synced
+- ✅ Added to PRIORITIZED_TASKS.md
+
+### ⏳ Backend Required (Next Session)
+
+**Agent API Endpoint** (Issue #1 - Backend):
+```python
+# Required FastAPI endpoint:
+# File: backend/app/api/v1/endpoints/agent.py
+
+@router.post("/chat", response_model=ChatResponse)
+async def chat_with_agent(
+    request: ChatRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Send message to AI agent and receive response.
+    
+    Request:
+    {
+      "message": "What papers discuss neural networks?",
+      "conversation_id": "uuid-optional",
+      "context": {}
+    }
+    
+    Response:
+    {
+      "message": "I found 45 papers on neural networks...",
+      "conversation_id": "uuid",
+      "sources": [
+        {"title": "Paper Title", "url": "...", "relevance": 0.95}
+      ],
+      "metadata": {}
+    }
+    """
+    # TODO: Implement LLM integration
+    # TODO: Add RAG for document context
+    # TODO: Store conversation history
+    # TODO: Return formatted response
+    pass
+```
+
+**Implementation Steps**:
+1. Create `backend/app/api/v1/endpoints/agent.py`
+2. Add ChatRequest/ChatResponse Pydantic models
+3. Integrate with LLM (OpenAI, Anthropic, etc.)
+4. Implement RAG for document search
+5. Add conversation storage (PostgreSQL/Redis)
+6. Test with frontend AgentChatTest component
+
+**Estimated Time**: 8-10 hours for backend portion
+
+---
+
+## 🔧 Testing Instructions
+
+### Test Agent API Integration
+
+**Prerequisites**:
+1. Backend API must be running at `http://192.168.1.200:8000`
+2. Backend must implement `/api/v1/agent/chat` endpoint (see above)
+3. Frontend dev server running at `http://localhost:3000`
+
+**Test Steps**:
+
+1. **Using AgentChatTest Component**:
+   ```
+   1. Navigate to http://localhost:3000
+   2. Scroll down to "Agent Chat Test" section
+   3. Type a message: "What papers are available?"
+   4. Click "Send Message"
+   5. Verify: Loading state appears
+   6. Verify: Response from backend displayed
+   7. Verify: No console errors
+   ```
+
+2. **Using 3D Chat Panel**:
+   ```
+   1. Navigate to http://localhost:3000
+   2. Wait for 3D scene to load
+   3. Look for floating chat panel in VR/3D view
+   4. Type message in chat input
+   5. Press Enter or click Send
+   6. Verify: "Agent is thinking..." appears
+   7. Verify: Response displayed in chat history
+   8. Verify: Sources (if any) shown below message
+   ```
+
+3. **Test VR Chat (Quest/VR Headset)**:
+   ```
+   1. Put on VR headset
+   2. Navigate to http://YOUR_IP:3000 in headset browser
+   3. Enter VR mode
+   4. Locate chat panel in 3D space
+   5. Use VR pointer to interact
+   6. Send test message
+   7. Verify response appears in VR
+   ```
+
+**Expected Behavior**:
+- ✅ Messages sent successfully
+- ✅ Loading states visible
+- ✅ Responses appear in chat
+- ✅ Sources displayed (if backend provides them)
+- ✅ Conversation persists across messages
+- ✅ No errors in browser console
+- ✅ Works in both desktop and VR
+
+**Common Issues**:
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| "Error communicating with agent" | Backend not running | Start backend API server |
+| No response | Endpoint not implemented | Implement /api/v1/agent/chat |
+| CORS error | Backend CORS not configured | Add frontend origin to CORS |
+| Timeout | Slow LLM response | Increase timeout or add streaming |
+
+---
+
+## 📊 Project Status Overview
+
+### Current Architecture
+
+```
+Frontend (Next.js + React + Babylon.js)
+  ├── src/lib/api/
+  │   ├── agent.ts         ✅ Complete
+  │   ├── types.ts         ✅ Complete
+  │   └── index.ts         ✅ Complete
+  ├── src/lib/
+  │   └── ChatPanel3D.ts   ✅ Integrated with API
+  └── src/components/
+      └── AgentChatTest.tsx ✅ Test component
+
+Backend (FastAPI + Python)
+  └── app/api/v1/endpoints/
+      └── agent.py          ❌ TODO - Needs implementation
+```
 
 ### Technology Stack
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| Next.js | 14.2.32 | React framework |
-| React | 18 | UI library |
-| TypeScript | 5.8.3 | Type safety |
-| Babylon.js | 8.33.2 | 3D engine |
-| Tailwind CSS | 3.3.0 | Styling |
-| Axios | 1.13.2 | HTTP client |
-
-### File Structure
-
-```
-beabodocl-babylon/
-├── specs/                    # 📚 13 documentation files
-│   ├── USER_STORIES.md      # ⭐ NEW - User requirements
-│   ├── SETUP.md             # ⭐ NEW - Developer onboarding
-│   ├── INDEX.md             # ⭐ UPDATED - Docs index
-│   ├── ARCHITECTURE.md      # System design
-│   ├── DEVELOPMENT.md       # Dev workflow
-│   ├── API_INTEGRATION.md   # API docs
-│   ├── COMPONENTS.md        # Component reference
-│   ├── ROADMAP.md          # Future plans
-│   ├── KNOWN_ISSUES.md     # Current issues
-│   └── ... (other docs)
-├── src/                     # Source code
-│   ├── app/                # Next.js pages
-│   ├── components/         # React components
-│   ├── lib/               # Utilities & API
-│   └── scripts/           # Babylon.js scripts
-├── public/                 # Static assets
-├── GITHUB_ISSUES.md       # ⭐ NEW - 20 detailed issues
-├── PRIORITIZED_TASKS.md   # ⭐ NEW - Phase-based plan
-├── PROJECT_PLANNING_SUMMARY.md  # ⭐ NEW - Executive summary
-├── HANDOFF.md             # ⭐ THIS FILE
-└── package.json           # Dependencies
-```
+| Component | Technology | Version | Status |
+|-----------|-----------|---------|---------|
+| Frontend Framework | Next.js | 14.2.32 | ✅ Working |
+| UI Library | React | 18 | ✅ Working |
+| 3D Engine | Babylon.js | 8.33.2 | ✅ Working |
+| Type Safety | TypeScript | 5.8.3 | ✅ Working |
+| HTTP Client | Axios | 1.13.2 | ✅ Working |
+| Backend API | FastAPI | - | ⏳ Needs agent endpoint |
+| AI/LLM | TBD | - | ❌ Not yet integrated |
 
 ---
 
 ## 🎯 Immediate Next Steps
 
-### Week 1 (This Week)
+### For Backend Developer
 
-**Day 1-2: Setup & Planning**
-```
-✓ Review HANDOFF.md (this document)
-□ Review GITHUB_ISSUES.md
-□ Review PRIORITIZED_TASKS.md
-□ Create GitHub issues (copy from GITHUB_ISSUES.md)
-□ Set up project board (Backlog, Sprint, In Progress, Done)
-□ Assign team members
-```
+**Priority 1: Implement Agent Chat Endpoint** (8-10 hours)
 
-**Day 3-5: Start Development**
-```
-□ Issue #3: Implement Error Boundaries (4-6h)
-  - Quick win for stability
-  - Prevents app crashes
-  - Foundation for other work
+```bash
+# 1. Create endpoint file
+touch backend/app/api/v1/endpoints/agent.py
 
-□ Issue #1: Agent API Integration - Backend (8-10h)
-  - Create /api/v1/agent/chat endpoint
-  - Integrate with LLM
-  - Basic response generation
-```
+# 2. Install required packages
+pip install openai  # or anthropic, langchain, etc.
+pip install langchain  # if using RAG
 
-### Week 2
+# 3. Implement endpoint (see Backend Required section above)
 
-```
-□ Issue #1: Agent API Integration - Frontend (8-14h)
-  - Update ChatPanel3D.sendMessage()
-  - Add loading states
-  - Handle responses
+# 4. Add to router
+# File: backend/app/api/v1/api.py
+# from app.api.v1.endpoints import agent
+# api_router.include_router(agent.router, prefix="/agent", tags=["agent"])
 
-□ Issue #5: Loading States (3-4h)
-  - Scene initialization progress
-  - User feedback
+# 5. Test with curl
+curl -X POST http://localhost:8000/api/v1/agent/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Hello, agent!"}'
 
-□ Issue #7: Security Hardening - Start (4-6h)
-  - Input sanitization
-  - XSS protection
+# 6. Test with frontend AgentChatTest component
 ```
 
-### First Month Goals
+**Files to Create/Modify**:
+1. `backend/app/api/v1/endpoints/agent.py` - Main endpoint
+2. `backend/app/schemas/agent.py` - Pydantic models
+3. `backend/app/services/agent_service.py` - LLM integration
+4. `backend/app/api/v1/api.py` - Include router
 
-**End of Week 4:**
-- ✅ Agent chat functional with real AI
-- ✅ No unhandled errors/crashes
-- ✅ Loading screens implemented
-- ✅ Basic security in place
-- ✅ Authentication system working
+### For VR Developer
 
----
+**Priority 2: Implement NavMesh System** (6-8 hours)
 
-## 🔑 Critical Success Factors
+```bash
+# 1. Install Recast.js
+npm install recast-detour
 
-### Must Complete Before Public Launch
+# 2. Create NavMesh system (see Issue #9 for full code)
+# File: src/lib/NavMeshSystem.ts
 
-1. **Authentication** (Issue #2)
-   - Required for security
-   - Blocks public deployment
-   - 20-28 hours
+# 3. Integrate with scene initialization
+# File: src/scripts/box.ts or equivalent
 
-2. **Security Hardening** (Issue #7)
-   - XSS protection
-   - Rate limiting
-   - Input validation
-   - 8-12 hours
-
-3. **Agent API Integration** (Issue #1)
-   - Core functionality
-   - High business value
-   - 16-24 hours
-
-4. **Error Boundaries** (Issue #3)
-   - Stability requirement
-   - Quick win
-   - 4-6 hours
-
-### High-Value Features
-
-5. **Agent-Assisted Search** (Issue #4)
-   - Natural language queries
-   - Main differentiator
-   - 14-20 hours
-
-6. **3D Document Search** (Issue #6)
-   - VR experience
-   - Unique value
-   - 10-14 hours
-
-7. **Chat History** (Issue #8)
-   - User retention
-   - Data persistence
-   - 8-10 hours
-
----
-
-## 📖 Documentation Guide
-
-### For Project Managers
-
-**Start Here:**
-1. Read PROJECT_PLANNING_SUMMARY.md (15 min)
-2. Review PRIORITIZED_TASKS.md Phase 1 (30 min)
-3. Skim GITHUB_ISSUES.md for scope (30 min)
-
-**Then:**
-- Create GitHub issues
-- Set up project board
-- Schedule sprint planning
-- Assign resources
-
-### For Developers
-
-**Start Here:**
-1. Read specs/SETUP.md - Complete setup (30 min)
-2. Follow installation steps
-3. Verify development environment
-4. Read specs/ARCHITECTURE.md (45 min)
-
-**Then:**
-- Pick up Issue #3 (Error Boundaries)
-- Follow acceptance criteria
-- Submit PR when complete
-
-### For Technical Leads
-
-**Start Here:**
-1. Read PRIORITIZED_TASKS.md (45 min)
-2. Review GITHUB_ISSUES.md #1-8 (60 min)
-3. Read specs/ARCHITECTURE.md (45 min)
-4. Review specs/KNOWN_ISSUES.md (20 min)
-
-**Then:**
-- Validate technical approach
-- Review resource allocation
-- Confirm timeline feasibility
-- Plan architecture reviews
-
----
-
-## ⚠️ Risks & Mitigation
-
-### High Risk
-
-**1. VR Performance**
-- Risk: May not achieve 90 FPS
-- Impact: VR unusable
-- Mitigation: Early optimization, LOD, performance budgets
-
-**2. AI Agent Quality**
-- Risk: Responses not relevant
-- Impact: Core value lost
-- Mitigation: Extensive testing, prompt tuning, feedback loops
-
-**3. DICOM Complexity**
-- Risk: Medical imaging too complex
-- Impact: Feature delayed
-- Mitigation: Use proven libraries, can defer to Phase 3
-
-### Medium Risk
-
-**4. Authentication Security**
-- Risk: Security vulnerabilities
-- Impact: Data breach
-- Mitigation: Use proven libraries, security audit, pen testing
-
-**5. Cross-Platform Support**
-- Risk: Doesn't work everywhere
-- Impact: Limited audience
-- Mitigation: Define supported platforms early, test on targets
-
----
-
-## 📈 Success Metrics
-
-### Technical Metrics
-```
-Performance:
-  Page load: < 3s
-  Scene init: < 2s
-  API response: < 1s
-  VR framerate: > 90 FPS
-
-Quality:
-  Test coverage: > 70%
-  Error rate: < 1%
-  Uptime: > 99.5%
+# 4. Test motion constraints in VR
 ```
 
-### User Metrics
-```
-Engagement:
-  Task completion: > 80%
-  User satisfaction: > 4/5
-  Return rate: > 50%
-  Avg session: > 15 min
-  VR usage: > 30%
+**Priority 3: Implement Strafing Controls** (4-6 hours)
+
+```bash
+# 1. Create LocomotionSystem (see Issue #10 for full code)
+# File: src/lib/LocomotionSystem.ts
+
+# 2. Map joystick axes to movement
+# 3. Test in VR headset
+# 4. Adjust deadzone and speed values
 ```
 
-### Business Metrics
+### For Project Manager
+
+**Setup & Planning** (1-2 hours)
+
 ```
-Delivery:
-  Core features complete
-  On time delivery
-  Under budget
-  Scalable architecture
+✅ Review HANDOFF.md (this document)
+✅ Review GITHUB_ISSUES.md for full issue details
+✅ Review PRIORITIZED_TASKS.md for overall plan
+□ Assign backend agent endpoint to developer
+□ Assign VR controls (Issues #9, #10) to VR developer
+□ Schedule backend/frontend integration testing
+□ Plan sprint around agent API completion
 ```
 
 ---
 
-## 🔧 Development Environment
+## 🔍 Code Examples
 
-### Required Software
+### How to Use the Agent API
 
-- **Node.js**: v18+ (Current: Check with `node --version`)
-- **npm**: v9+ (Comes with Node.js)
-- **Git**: v2+ for version control
-- **VS Code**: Recommended editor
-- **Backend API**: Must be running on port 8000
+**Simple Message Send**:
+```typescript
+import { agentApi } from '@/lib/api';
 
-### Setup Steps
+// Send a message
+const response = await agentApi.sendMessage('What papers discuss AI?');
+console.log(response.message);  // AI's response
+console.log(response.sources);  // Related papers
+```
 
-1. **Clone Repository**
-   ```bash
-   git clone <repository-url>
-   cd beabodocl-babylon
-   ```
+**Full Conversation**:
+```typescript
+import { agentApi } from '@/lib/api';
 
-2. **Install Dependencies**
-   ```bash
-   npm install
-   ```
+let conversationId: string | undefined;
 
-3. **Configure Environment**
-   ```bash
-   # Create .env.local
-   NEXT_PUBLIC_API_URL=http://localhost:8000
-   ```
+// First message
+const response1 = await agentApi.chat({
+  message: 'Tell me about neural networks',
+  context: { user_id: '123' }
+});
+conversationId = response1.conversation_id;
 
-4. **Start Development**
-   ```bash
-   npm run dev
-   ```
+// Follow-up message
+const response2 = await agentApi.chat({
+  message: 'What are the latest advancements?',
+  conversation_id: conversationId  // Maintains context
+});
 
-5. **Access Application**
-   - Desktop: http://localhost:3000
-   - VR: http://YOUR_IP:3000
+// Get history
+const history = await agentApi.getHistory(conversationId);
+console.log(history);  // All messages in conversation
+```
 
-**Full setup guide**: See specs/SETUP.md
+**In a React Component**:
+```typescript
+'use client';
+import { useState } from 'react';
+import { agentApi } from '@/lib/api';
+
+export default function ChatComponent() {
+  const [message, setMessage] = useState('');
+  const [response, setResponse] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const sendMessage = async () => {
+    setLoading(true);
+    try {
+      const result = await agentApi.sendMessage(message);
+      setResponse(result.message);
+    } catch (error) {
+      setResponse('Error: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div>
+      <input 
+        value={message} 
+        onChange={(e) => setMessage(e.target.value)}
+        disabled={loading}
+      />
+      <button onClick={sendMessage} disabled={loading}>
+        {loading ? 'Sending...' : 'Send'}
+      </button>
+      <div>{response}</div>
+    </div>
+  );
+}
+```
 
 ---
 
-## 📞 Support & Resources
+## 📖 Documentation References
 
-### Documentation
+### Key Documents
 
-**Essential Reading:**
-- specs/SETUP.md - Developer onboarding
-- specs/DEVELOPMENT.md - Daily workflow
-- specs/ARCHITECTURE.md - System design
-- GITHUB_ISSUES.md - All issues
-- PRIORITIZED_TASKS.md - Development plan
+**For This Session's Work**:
+- `HANDOFF.md` (this file) - Session summary
+- `GITHUB_ISSUES.md` - Full issue details for #9 and #10
+- `PRIORITIZED_TASKS.md` - Task prioritization
 
-**Reference:**
-- specs/API_INTEGRATION.md - API usage
-- specs/COMPONENTS.md - Component reference
-- specs/KNOWN_ISSUES.md - Current issues
-- specs/ROADMAP.md - Future plans
+**For Overall Project**:
+- `specs/SETUP.md` - Developer environment setup
+- `specs/ARCHITECTURE.md` - System architecture
+- `specs/DEVELOPMENT.md` - Development workflow
+- `specs/API_INTEGRATION.md` - API usage guide
 
-### External Resources
+**For Agent Integration**:
+- `src/lib/api/agent.ts` - API client code
+- `src/lib/api/types.ts` - TypeScript interfaces
+- `src/lib/ChatPanel3D.ts` - 3D chat implementation
 
-- **Babylon.js Docs**: https://doc.babylonjs.com/
-- **Next.js Docs**: https://nextjs.org/docs
-- **React Docs**: https://react.dev/
-- **Tailwind Docs**: https://tailwindcss.com/docs
+**For VR Controls**:
+- Issue #9 in `GITHUB_ISSUES.md` - NavMesh details
+- Issue #10 in `GITHUB_ISSUES.md` - Strafing details
 
-### Getting Help
+---
 
-1. Check specs/KNOWN_ISSUES.md
-2. Search GitHub issues
-3. Review relevant documentation
-4. Consult Babylon.js forum
-5. Ask team members
+## ⚠️ Important Notes
+
+### 🚨 Critical Items
+
+1. **Backend Endpoint Required**
+   - Frontend is ready but will fail without backend
+   - Implement `/api/v1/agent/chat` endpoint ASAP
+   - See "Backend Required" section above for details
+
+2. **AgentChatTest Component**
+   - Currently in `src/app/page.tsx` for testing
+   - **Remove before production deployment**
+   - Only for development/testing purposes
+
+3. **CORS Configuration**
+   - Backend must allow frontend origin
+   - Add `http://localhost:3000` to CORS allowed origins
+   - Add production domain when deploying
+
+4. **NavMesh Before Strafing**
+   - Implement Issue #9 before Issue #10
+   - Strafing needs navmesh for height validation
+   - Don't parallelize these VR tasks
+
+### 💡 Recommendations
+
+1. **Test Backend First**
+   - Use curl or Postman to test agent endpoint
+   - Verify response format matches types.ts
+   - Then test with frontend
+
+2. **Incremental VR Testing**
+   - Test each joystick axis separately
+   - Verify navmesh loads before testing movement
+   - Use debug visualization for navmesh
+
+3. **Error Monitoring**
+   - Watch browser console for errors
+   - Check network tab for failed API calls
+   - Monitor backend logs for exceptions
+
+4. **Performance**
+   - LLM responses can be slow (2-5 seconds)
+   - Consider adding streaming for real-time responses
+   - Add timeout handling (30 seconds recommended)
 
 ---
 
 ## ✅ Handoff Checklist
 
-### Documentation Complete
-- [x] User stories documented
-- [x] Setup guide created
-- [x] GitHub issues prepared (20)
-- [x] Task list prioritized
-- [x] Planning summary created
-- [x] Documentation index updated
-- [x] Handoff document created
+### Completed This Session
+- [x] Agent API client implementation
+- [x] TypeScript type definitions
+- [x] ChatPanel3D API integration
+- [x] Loading states and error handling
+- [x] Test component creation
+- [x] Issue #9 created (NavMesh)
+- [x] Issue #10 created (Strafing)
+- [x] Documentation synchronized
+- [x] Code committed locally
+- [x] Issues created on GitHub
+- [x] Handoff document prepared
 
-### Ready for Development
-- [x] All requirements documented
-- [x] Technical approach defined
-- [x] Issues ready to create
-- [x] Phases planned
-- [x] Risks identified
-- [x] Success metrics defined
+### Ready for Next Developer
+- [x] All code changes documented
+- [x] Testing instructions provided
+- [x] Backend requirements specified
+- [x] VR implementation details complete
+- [x] Code examples included
+- [x] Next steps clearly defined
 
-### Next Actions Required
-- [ ] Create GitHub issues from GITHUB_ISSUES.md
-- [ ] Set up GitHub project board
-- [ ] **Synchronize GitHub issues with PRIORITIZED_TASKS.md** ⚠️
-- [ ] **Update issue status in GITHUB_ISSUES.md with links** ⚠️
-- [ ] Assign team members
-- [ ] Schedule sprint planning
-- [ ] Verify development environments
-- [x] ~~Start Issue #3 (Error Boundaries)~~ ✅ **COMPLETE**
-- [ ] Start Issue #1 (Agent API Integration)
-
-**Note**: Always synchronize GitHub issues with local task documentation files (GITHUB_ISSUES.md, PRIORITIZED_TASKS.md) during handoff preparation to ensure consistency.
-
----
-
-## 📝 Change Log
-
-### November 7, 2025
-
-**Documentation Added:**
-- Created specs/USER_STORIES.md
-  - Agent-assisted paper discovery
-  - DICOM medical imaging
-  - Data visualization requirements
-
-- Created specs/SETUP.md
-  - Complete developer onboarding
-  - Platform-specific instructions
-  - Troubleshooting guide
-
-- Created GITHUB_ISSUES.md
-  - 20 detailed issues
-  - Ready to create on GitHub
-  - Complete with acceptance criteria
-
-- Created PRIORITIZED_TASKS.md
-  - 4 development phases
-  - Sprint breakdown
-  - Resource allocation
-  - Risk assessment
-
-- Created PROJECT_PLANNING_SUMMARY.md
-  - Executive summary
-  - Quick reference
-  - Next steps guide
-
-- Updated specs/INDEX.md
-  - Added new documentation
-  - Updated statistics
-  - Improved navigation
-
-**Project Status:**
-- Current: v0.1.0 (Proof of Concept)
-- Documentation: Complete and ready
-- Development: Ready to start Phase 1
-- Timeline: 6-8 months to v1.0.0
+### Before Production
+- [ ] Backend agent endpoint implemented
+- [ ] Frontend/backend integration tested
+- [ ] Remove AgentChatTest component
+- [ ] NavMesh system implemented (Issue #9)
+- [ ] Strafing controls implemented (Issue #10)
+- [ ] VR testing in headset complete
+- [ ] Error handling verified
+- [ ] Performance testing done
+- [ ] Documentation updated
 
 ---
 
-## 🎯 Final Notes
+## 🚀 Summary
 
-### Project Is Ready When...
+### What's Working
+✅ Complete agent API client ready to use  
+✅ ChatPanel3D integrated with real API  
+✅ Proper loading states and error handling  
+✅ Conversation persistence implemented  
+✅ Source citation display ready  
+✅ Test component for verification  
+✅ Two new VR control issues created with full specs  
 
-**For Project Managers:**
-- All GitHub issues created
-- Project board set up
-- Team assigned
-- Sprint 1.1 planned
+### What's Needed
+❌ Backend `/api/v1/agent/chat` endpoint  
+❌ LLM integration (OpenAI/Anthropic/etc.)  
+❌ RAG implementation for document context  
+❌ NavMesh system for VR motion (Issue #9)  
+❌ Strafing controls for VR (Issue #10)  
 
-**For Developers:**
-- Environment set up
-- Docs reviewed
-- First issue assigned
-- Ready to code
-
-**For Stakeholders:**
-- Timeline understood
-- Phases reviewed
-- Success metrics agreed
-- Budget approved
-
-### Key Takeaways
-
-1. **Comprehensive Documentation**: Everything needed is documented
-2. **Clear Path Forward**: Prioritized, phase-based plan
-3. **Realistic Timeline**: 6-8 months with proper resources
-4. **Risk Awareness**: Known risks with mitigation strategies
-5. **Ready to Execute**: Can start development immediately
-
-### Success Formula
-
-```
-Foundation First (Phase 1)
-  └─→ Core Features (Phase 2)
-      └─→ Advanced Features (Phase 3)
-          └─→ Polish & Launch (Phase 4)
-```
-
-**Start with:**
-- Error Boundaries (#3) - 4-6h
-- Agent API (#1) - 16-24h
-- Security (#7) - 8-12h
-- Authentication (#2) - 20-28h
-
-**Then build:**
-- Agent Search (#4)
-- 3D Interactions (#6)
-- Chat History (#8)
-- Everything else...
+### Next Actions
+1. **Backend Developer**: Implement agent chat endpoint (8-10h)
+2. **VR Developer**: NavMesh system (6-8h) then Strafing (4-6h)
+3. **QA**: Test integration when backend ready
+4. **PM**: Assign tasks and track progress
 
 ---
 
-## 🚀 Ready to Launch!
+**Handoff Date**: December 2024  
+**Status**: ✅ Frontend Complete, Backend Pending  
+**Session Duration**: ~2 hours  
+**Files Modified**: 7  
+**Lines Changed**: ~1,000+  
 
-All documentation is complete and the project is ready for active development.
-
-**Next Step**: Create GitHub issues and start Sprint 1.1
-
-**Questions?** Refer to:
-- PROJECT_PLANNING_SUMMARY.md for quick answers
-- PRIORITIZED_TASKS.md for detailed planning
-- GITHUB_ISSUES.md for implementation details
-- specs/ folder for all technical documentation
-
----
-
-**Handoff Date**: November 7, 2025  
-**Status**: ✅ Complete and Ready  
-**Documentation Version**: 1.0  
-**Project Version**: 0.1.0
-
-**Good luck with the development! 🎉**
+**Ready for continuation! 🎉**

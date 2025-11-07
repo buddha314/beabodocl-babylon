@@ -9,6 +9,7 @@ import {
   ScrollViewer, 
   Control 
 } from "@babylonjs/gui";
+import { agentApi } from './api';
 
 /**
  * ChatPanel3D - An in-world 3D chat interface for VR/desktop applications
@@ -22,7 +23,10 @@ export class ChatPanel3D {
   private messageContainer!: StackPanel;
   private scrollViewer!: ScrollViewer;
   private inputText!: InputText;
+  private sendButton!: Button;
   private messages: Array<{ sender: string; text: string }> = [];
+  private conversationId?: string;
+  private isLoading: boolean = false;
 
   constructor(scene: Scene, position: Vector3 = new Vector3(0, 2, 5)) {
     // Create plane mesh for the screen
@@ -117,26 +121,30 @@ export class ChatPanel3D {
     inputArea.addControl(this.inputText);
 
     // Send button
-    const sendButton = Button.CreateSimpleButton("sendBtn", "Send");
-    sendButton.width = "150px";
-    sendButton.height = "70px";
-    sendButton.left = "140px";
-    sendButton.color = "white";
-    sendButton.background = "rgba(50, 150, 50, 0.9)";
-    sendButton.fontSize = 24;
-    sendButton.thickness = 2;
-    inputArea.addControl(sendButton);
+    this.sendButton = Button.CreateSimpleButton("sendBtn", "Send");
+    this.sendButton.width = "150px";
+    this.sendButton.height = "70px";
+    this.sendButton.left = "140px";
+    this.sendButton.color = "white";
+    this.sendButton.background = "rgba(50, 150, 50, 0.9)";
+    this.sendButton.fontSize = 24;
+    this.sendButton.thickness = 2;
+    inputArea.addControl(this.sendButton);
 
     // Button hover effect
-    sendButton.onPointerEnterObservable.add(() => {
-      sendButton.background = "rgba(70, 180, 70, 0.9)";
+    this.sendButton.onPointerEnterObservable.add(() => {
+      if (!this.isLoading) {
+        this.sendButton.background = "rgba(70, 180, 70, 0.9)";
+      }
     });
-    sendButton.onPointerOutObservable.add(() => {
-      sendButton.background = "rgba(50, 150, 50, 0.9)";
+    this.sendButton.onPointerOutObservable.add(() => {
+      if (!this.isLoading) {
+        this.sendButton.background = "rgba(50, 150, 50, 0.9)";
+      }
     });
 
     // Handle send button click
-    sendButton.onPointerClickObservable.add(() => {
+    this.sendButton.onPointerClickObservable.add(() => {
       this.sendMessage();
     });
 
@@ -151,9 +159,9 @@ export class ChatPanel3D {
     this.addMessage("Agent", "Hello! I'm your research assistant. Ask me anything about biomedical research papers.", "rgba(100, 50, 200, 0.3)");
   }
 
-  private sendMessage() {
+  private async sendMessage() {
     const message = this.inputText.text.trim();
-    if (!message) return;
+    if (!message || this.isLoading) return;
 
     // Add user message
     this.addMessage("You", message, "rgba(50, 100, 200, 0.3)");
@@ -161,11 +169,53 @@ export class ChatPanel3D {
     // Clear input
     this.inputText.text = "";
 
-    // TODO: Replace with actual API call to /api/v1/agent/chat
-    // For now, simulate agent response
-    setTimeout(() => {
-      this.addMessage("Agent", `I received your question: "${message}". The API integration is coming soon!`, "rgba(100, 50, 200, 0.3)");
-    }, 800);
+    // Set loading state
+    this.isLoading = true;
+    this.sendButton.textBlock!.text = "...";
+    this.sendButton.background = "rgba(100, 100, 100, 0.7)";
+    this.inputText.isEnabled = false;
+
+    try {
+      // Call the real agent API
+      const response = await agentApi.sendMessage(message, this.conversationId);
+      
+      // Store conversation ID for context
+      if (response.conversation_id) {
+        this.conversationId = response.conversation_id;
+      }
+
+      // Add agent response
+      this.addMessage("Agent", response.message, "rgba(100, 50, 200, 0.3)");
+
+      // Add sources if available
+      if (response.sources && response.sources.length > 0) {
+        const sourcesText = "\n\nSources:\n" + 
+          response.sources
+            .map((s, i) => `${i + 1}. ${s.title} (relevance: ${(s.relevance_score * 100).toFixed(0)}%)`)
+            .join("\n");
+        this.addMessage("Agent", sourcesText, "rgba(80, 40, 160, 0.2)");
+      }
+
+      // Log metadata in development
+      if (response.metadata && process.env.NODE_ENV === "development") {
+        console.log("[Agent Chat] Response metadata:", response.metadata);
+      }
+    } catch (error) {
+      console.error("[Agent Chat] Error sending message:", error);
+      
+      // Show error message to user
+      const errorMessage = error instanceof Error 
+        ? `Sorry, I encountered an error: ${error.message}. Please try again.`
+        : "Sorry, I couldn't process your request. Please check if the backend is running and try again.";
+      
+      this.addMessage("Agent", errorMessage, "rgba(200, 50, 50, 0.3)");
+    } finally {
+      // Reset loading state
+      this.isLoading = false;
+      this.sendButton.textBlock!.text = "Send";
+      this.sendButton.background = "rgba(50, 150, 50, 0.9)";
+      this.inputText.isEnabled = true;
+    }
   }
 
   /**

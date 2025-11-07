@@ -121,9 +121,29 @@ cd C:\Users\b\src\beabodocl-babylon
 
 Both repositories now properly document their relationship and the multi-client architecture.
 
+### Scene Optimization (Babylon.js Frontend)
+**Commit:** Pending  
+**Files Modified:**
+- `src/app/page.tsx` - Scene setup improvements
+
+**Changes Made:**
+1. **Removed spinning cube** - Cleaned up demo element that distracted from the chat interface
+2. **Repositioned chat panel** - Moved from (0, 2, 5) to (0, 2, -5), oriented to face origin internally
+3. **Adjusted camera** - Positioned at (0, 2, -5) with proper angles to frame the chat screen optimally
+   - Alpha: Math.PI (180° horizontal)
+   - Beta: Math.PI / 2.5 (viewing angle from above)
+   - Radius: 8 (distance from target)
+   - Target: Chat panel position
+
+**Benefits:**
+- Cleaner scene focused on the research chat interface
+- Better camera framing for both desktop and VR viewing
+- Chat panel oriented towards origin for spatial consistency
+- Improved user experience with main UI element front and center
+
 ---
 
 **Session Date:** November 7, 2025  
-**Status:** All changes committed and pushed   
-**Next Developer:** Ready to continue with frontend testing and VR features
+**Status:** Scene optimization ready to commit and push  
+**Next Developer:** Ready to commit scene changes, then continue with frontend testing and VR features
 

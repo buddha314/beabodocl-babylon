@@ -94,8 +94,9 @@ export default function Home() {
 			// Import necessary classes
 			const { MeshBuilder, StandardMaterial, Color3, Texture, ArcRotateCamera, HemisphericLight } = await import("@babylonjs/core");
 
-		// Create camera
-		const camera = new ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 3, 10, new Vector3(0, 1, 0), scene);
+		// Create camera - positioned to face the chat screen
+		// Camera is at origin looking forward (negative Z) at the chat panel
+		const camera = new ArcRotateCamera("camera", Math.PI, Math.PI / 2.5, 8, new Vector3(0, 2, -5), scene);
 		camera.attachControl();
 		scene.activeCamera = camera;
 
@@ -109,29 +110,10 @@ export default function Home() {
 		groundMaterial.diffuseColor = new Color3(0.3, 0.3, 0.4);
 		ground.material = groundMaterial;
 
-		// Create a textured box
-		const box = MeshBuilder.CreateBox("box", { size: 2 }, scene);
-		box.position.y = 1;
-		const boxMaterial = new StandardMaterial("boxMaterial", scene);
-		
-		// Try to load the texture, fallback to color if it fails
-		try {
-			boxMaterial.diffuseTexture = new Texture("/assets/amiga.jpg", scene);
-		} catch (error) {
-			console.warn("Failed to load texture, using solid color:", error);
-			boxMaterial.diffuseColor = new Color3(0.8, 0.4, 0.2);
-		}
-		box.material = boxMaterial;
-
-		// Add some rotation animation
-		scene.registerBeforeRender(() => {
-			box.rotation.y += 0.01;
-		});
-
-		// Create 3D Chat Panel
-		const chatPanel = new ChatPanel3D(scene, new Vector3(0, 2, 5));
-		// Make it face the camera
-		chatPanel.lookAt(camera.position);
+		// Create 3D Chat Panel - positioned away from origin, facing inward
+		const chatPanel = new ChatPanel3D(scene, new Vector3(0, 2, -5));
+		// Make it face the origin (internally)
+		chatPanel.lookAt(new Vector3(0, 0, 0));
 
 		console.log("Scene created successfully with chat panel");
 

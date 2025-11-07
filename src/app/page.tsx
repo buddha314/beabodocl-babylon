@@ -47,6 +47,7 @@ import { loadScene } from "babylonjs-editor-tools";
 import { scriptsMap } from "@/scripts";
 import ApiTest from "@/components/ApiTest";
 import { ChatPanel3D } from "@/lib/ChatPanel3D";
+import { SceneErrorBoundary } from "@/components/ErrorBoundary";
 
 export default function Home() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -85,11 +86,12 @@ export default function Home() {
 	}, [canvasRef]);
 
 	async function handleLoad(engine: Engine, scene: Scene) {
-		const havok = await HavokPhysics();
-		scene.enablePhysics(new Vector3(0, -981, 0), new HavokPlugin(true, havok));
+		try {
+			const havok = await HavokPhysics();
+			scene.enablePhysics(new Vector3(0, -981, 0), new HavokPlugin(true, havok));
 
-		// Import necessary classes
-		const { MeshBuilder, StandardMaterial, Color3, Texture, ArcRotateCamera, HemisphericLight } = await import("@babylonjs/core");
+			// Import necessary classes
+			const { MeshBuilder, StandardMaterial, Color3, Texture, ArcRotateCamera, HemisphericLight } = await import("@babylonjs/core");
 
 		// Create camera
 		const camera = new ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 3, 10, new Vector3(0, 1, 0), scene);
@@ -165,15 +167,21 @@ export default function Home() {
 		engine.runRenderLoop(() => {
 			scene.render();
 		});
+		} catch (error) {
+			console.error("Failed to initialize 3D scene:", error);
+			throw error; // Re-throw to be caught by error boundary
+		}
 	}
 
 	return (
 		<main className="flex w-screen h-screen flex-col items-center justify-between">
+		<SceneErrorBoundary>
 			<canvas
 				ref={canvasRef}
 				className="w-full h-full outline-none select-none"
 			/>
-			<ApiTest />
-		</main>
+		</SceneErrorBoundary>
+		<ApiTest />
+	</main>
 	);
 }

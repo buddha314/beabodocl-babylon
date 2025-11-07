@@ -1,4 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Beabodocl-Babylon
+
+**3D VR/WebXR Client for Babocument Research Platform**
+
+This is a Next.js-based 3D visualization and VR interface for the Babocument academic paper analysis system. Built with Babylon.js and WebXR, it provides an immersive research experience in VR headsets and web browsers.
+
+> **Backend Repository:** [babocument](https://github.com/buddha314/babocument)  
+> **Local Development:** Backend is located at `C:\Users\b\src\babocument`
+
+## Project Overview
+
+**Beabodocl-Babylon** is the first client application for the Babocument platform. Additional clients (mobile apps, desktop applications, etc.) are planned for future development. This client focuses on providing:
+
+- **3D Scene Visualization** - Immersive Babylon.js 3D environment
+- **VR/WebXR Support** - Full support for Meta Quest and other VR headsets  
+- **AI Agent Chat** - Conversational interface for research assistance
+- **Document Visualization** - 3D representations of papers and research data
+- **Real-time Collaboration** - Multi-user features (planned)
+
+## Architecture
+
+```
+┌─────────────────────────────────────────┐
+│   Beabodocl-Babylon (This Repo)        │
+│   - Next.js Frontend                    │
+│   - Babylon.js 3D Engine                │
+│   - WebXR VR Interface                  │
+│   - Agent Chat UI                       │
+└──────────────┬──────────────────────────┘
+               │ REST API
+               ▼
+┌─────────────────────────────────────────┐
+│   Babocument Backend                    │
+│   - FastAPI Server                      │
+│   - Multi-Agent AI System               │
+│   - Vector Database (ChromaDB)          │
+│   - LLM Integration (Ollama)            │
+└─────────────────────────────────────────┘
+```
+
+**Other Clients (Planned):**
+- Mobile apps (iOS/Android)
+- Desktop applications  
+- CLI tools
+- Browser extensions
 
 ## Getting Started
 

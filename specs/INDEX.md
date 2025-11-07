@@ -22,8 +22,10 @@ Quick navigation for all project documentation.
 | Document | Purpose | Audience | Priority |
 |----------|---------|----------|----------|
 | **[README.md](./README.md)** | Project overview & index | Everyone | 🔴 Critical |
+| **[SETUP.md](./SETUP.md)** | Developer onboarding guide | New Developers | 🔴 Critical |
 | **[ARCHITECTURE.md](./ARCHITECTURE.md)** | System design & architecture | Developers | 🔴 Critical |
 | **[DEVELOPMENT.md](./DEVELOPMENT.md)** | Setup & dev workflow | Developers | 🔴 Critical |
+| **[USER_STORIES.md](./USER_STORIES.md)** | User stories & requirements | Product/Dev | 🟡 Important |
 | **[COMPONENTS.md](./COMPONENTS.md)** | Component reference | Frontend Devs | 🟡 Important |
 | **[API_INTEGRATION.md](./API_INTEGRATION.md)** | API documentation | Frontend Devs | 🟡 Important |
 | **[3D_SCENE.md](./3D_SCENE.md)** | Babylon.js & VR guide | 3D Developers | 🟡 Important |
@@ -43,9 +45,16 @@ Quick navigation for all project documentation.
 - [Design Patterns](./ARCHITECTURE.md#key-design-patterns)
 - [Technology Decisions](./ARCHITECTURE.md#technology-decisions)
 
-### 💻 Development
+### � Requirements & User Stories
+- [User Stories Overview](./USER_STORIES.md)
+- [Agent-Assisted Paper Discovery](./USER_STORIES.md#agent-assisted-paper-discovery)
+- [DICOM Medical Imaging](./USER_STORIES.md#dicom-medical-imaging-visualization)
+- [Data Visualization Requirements](./USER_STORIES.md#data-visualization-requirements)
+
+### �💻 Development
 - [Prerequisites](./DEVELOPMENT.md#prerequisites)
 - [Initial Setup](./DEVELOPMENT.md#initial-setup)
+- [Developer Onboarding](./SETUP.md)
 - [Development Workflow](./DEVELOPMENT.md#development-workflow)
 - [Common Tasks](./DEVELOPMENT.md#common-development-tasks)
 - [Debugging](./DEVELOPMENT.md#debugging)
@@ -99,10 +108,11 @@ Quick navigation for all project documentation.
 
 ### 🆕 New Developer
 1. [README.md](./README.md) - Overview
-2. [DEVELOPMENT.md](./DEVELOPMENT.md) - Setup
-3. [ARCHITECTURE.md](./ARCHITECTURE.md) - Understanding the system
-4. [COMPONENTS.md](./COMPONENTS.md) - Code structure
-5. [KNOWN_ISSUES.md](./KNOWN_ISSUES.md) - What to watch out for
+2. [SETUP.md](./SETUP.md) - Complete onboarding guide
+3. [DEVELOPMENT.md](./DEVELOPMENT.md) - Development workflow
+4. [ARCHITECTURE.md](./ARCHITECTURE.md) - Understanding the system
+5. [COMPONENTS.md](./COMPONENTS.md) - Code structure
+6. [KNOWN_ISSUES.md](./KNOWN_ISSUES.md) - What to watch out for
 
 ### 🎨 Frontend Developer
 1. [COMPONENTS.md](./COMPONENTS.md) - Component reference
@@ -129,11 +139,12 @@ Quick navigation for all project documentation.
 4. [KNOWN_ISSUES.md](./KNOWN_ISSUES.md) - Current state
 5. [DEPLOYMENT.md](./DEPLOYMENT.md) - Production readiness
 
-### 📦 Product Manager
+### � Product Manager
 1. [README.md](./README.md) - Project overview
-2. [ROADMAP.md](./ROADMAP.md) - Feature roadmap
-3. [KNOWN_ISSUES.md](./KNOWN_ISSUES.md) - Limitations
-4. [DEPLOYMENT.md](./DEPLOYMENT.md#success-metrics) - Metrics
+2. [USER_STORIES.md](./USER_STORIES.md) - User requirements
+3. [ROADMAP.md](./ROADMAP.md) - Feature roadmap
+4. [KNOWN_ISSUES.md](./KNOWN_ISSUES.md) - Limitations
+5. [DEPLOYMENT.md](./DEPLOYMENT.md#success-metrics) - Metrics
 
 ---
 
@@ -177,10 +188,10 @@ Quick navigation for all project documentation.
 
 | Metric | Value |
 |--------|-------|
-| **Total Documents** | 11 |
-| **Total Words** | ~35,000+ |
-| **Code Examples** | 100+ |
-| **Reading Time** | 6-8 hours |
+| **Total Documents** | 13 |
+| **Total Words** | ~55,000+ |
+| **Code Examples** | 150+ |
+| **Reading Time** | 8-10 hours |
 | **Last Updated** | November 7, 2025 |
 
 ---
@@ -192,39 +203,46 @@ Quick navigation for all project documentation.
 1. **[README.md](./README.md)** (15 min)
    - Project context and overview
 
-2. **[DEVELOPMENT.md](./DEVELOPMENT.md)** (30 min)
-   - Setup and get running
+2. **[SETUP.md](./SETUP.md)** (30 min)
+   - Complete developer onboarding
 
-3. **[ARCHITECTURE.md](./ARCHITECTURE.md)** (45 min)
+3. **[DEVELOPMENT.md](./DEVELOPMENT.md)** (30 min)
+   - Development workflow and practices
+
+4. **[ARCHITECTURE.md](./ARCHITECTURE.md)** (45 min)
    - Understand the system design
 
-4. **[COMPONENTS.md](./COMPONENTS.md)** (30 min)
+5. **[USER_STORIES.md](./USER_STORIES.md)** (30 min)
+   - User requirements and features
+
+6. **[COMPONENTS.md](./COMPONENTS.md)** (30 min)
    - Learn the component structure
 
-5. **[API_INTEGRATION.md](./API_INTEGRATION.md)** (30 min)
+7. **[API_INTEGRATION.md](./API_INTEGRATION.md)** (30 min)
    - Master API integration
 
-6. **[3D_SCENE.md](./3D_SCENE.md)** (45 min)
+8. **[3D_SCENE.md](./3D_SCENE.md)** (45 min)
    - Understand 3D implementation
 
-7. **[KNOWN_ISSUES.md](./KNOWN_ISSUES.md)** (20 min)
+9. **[KNOWN_ISSUES.md](./KNOWN_ISSUES.md)** (20 min)
    - Learn current limitations
 
-8. **[ROADMAP.md](./ROADMAP.md)** (20 min)
-   - See future direction
+10. **[ROADMAP.md](./ROADMAP.md)** (20 min)
+    - See future direction
 
-9. **[DEPLOYMENT.md](./DEPLOYMENT.md)** (30 min)
-   - Learn deployment process
+11. **[DEPLOYMENT.md](./DEPLOYMENT.md)** (30 min)
+    - Learn deployment process
 
-**Total:** ~4.5 hours
+**Total:** ~5.5 hours
 
 ### Fast Track (Essential Only)
 
 1. **[README.md](./README.md)** (15 min)
-2. **[DEVELOPMENT.md](./DEVELOPMENT.md)** (30 min)
-3. **[KNOWN_ISSUES.md](./KNOWN_ISSUES.md)** (20 min)
+2. **[SETUP.md](./SETUP.md)** (30 min)
+3. **[DEVELOPMENT.md](./DEVELOPMENT.md)** (30 min)
+4. **[KNOWN_ISSUES.md](./KNOWN_ISSUES.md)** (20 min)
 
-**Total:** ~1 hour
+**Total:** ~1.5 hours
 
 ### Handoff Focus
 
@@ -287,6 +305,8 @@ Use this to verify documentation completeness:
 - [x] Project overview (README.md)
 - [x] System architecture (ARCHITECTURE.md)
 - [x] Setup instructions (DEVELOPMENT.md)
+- [x] Developer onboarding (SETUP.md)
+- [x] User stories & requirements (USER_STORIES.md)
 - [x] Component reference (COMPONENTS.md)
 - [x] API documentation (API_INTEGRATION.md)
 - [x] 3D/VR guide (3D_SCENE.md)

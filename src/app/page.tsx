@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Scene } from "@babylonjs/core/scene";
 import { Engine } from "@babylonjs/core/Engines/engine";
@@ -55,6 +55,7 @@ import { SceneErrorBoundary } from "@/components/ErrorBoundary";
 
 export default function Home() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const [isInVR, setIsInVR] = useState(false);
 
 	useEffect(() => {
 		if (!canvasRef.current) {
@@ -138,17 +139,33 @@ export default function Home() {
 			const vrMovement = new VRMovementSystem(scene, xrHelper);
 			console.log("VR Movement System initialized with strafing support");
 
-			// Enable controller pointer selection for GUI interaction
+			// CRITICAL: Make sure the chat panel mesh is in the pointer selection meshes
 			if (xrHelper.pointerSelection) {
-				console.log("VR controller pointer selection enabled");
+				const chatMesh = chatPanel.getMesh();
+				xrHelper.pointerSelection.attach();
+				console.log("VR controller pointer selection enabled for chat panel");
+				console.log("Point your VR controller at the chat panel and pull trigger to interact");
 			}
 
 			// Log when entering/exiting XR
 			xrHelper.baseExperience.onStateChangedObservable.add((state) => {
 				console.log("WebXR state changed:", state);
 				if (state === 2) { // IN_XR
-					console.log("Entered VR mode - chat panel is interactive with controllers");
-					console.log("Left joystick: Y-axis = Forward/Back, X-axis = Strafe Left/Right");
+					setIsInVR(true);
+					console.log("==============================================");
+					console.log("ENTERED VR MODE");
+					console.log("==============================================");
+					console.log("Chat Panel Controls:");
+					console.log("- Point controller at panel");
+					console.log("- Pull trigger to click buttons/type");
+					console.log("- Use virtual keyboard to type messages");
+					console.log("");
+					console.log("Movement Controls:");
+					console.log("- Left joystick: Y-axis = Forward/Back");
+					console.log("- Left joystick: X-axis = Strafe Left/Right");
+					console.log("==============================================");
+				} else {
+					setIsInVR(false);
 				}
 			});
 		} catch (error) {
@@ -172,8 +189,12 @@ export default function Home() {
 				className="w-full h-full outline-none select-none"
 			/>
 		</SceneErrorBoundary>
-		<ApiTest />
-		<AgentChatTest />
+		{!isInVR && (
+			<>
+				<ApiTest />
+				<AgentChatTest />
+			</>
+		)}
 	</main>
 	);
 }

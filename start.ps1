@@ -103,17 +103,18 @@ if (-not $SkipBackendCheck) {
 # Get local network IP for VR headset access
 Write-Info "`nDetecting network interfaces for VR headset access..."
 $networkIps = Get-NetIPAddress -AddressFamily IPv4 | 
-    Where-Object { $_.IPAddress -notmatch '^127\.' -and $_.IPAddress -notmatch '^169\.254\.' } |
+    Where-Object { 
+        $_.IPAddress -notmatch '^127\.' -and 
+        $_.IPAddress -notmatch '^169\.254\.' -and
+        $_.PrefixOrigin -ne 'WellKnown'
+    } |
     Select-Object -ExpandProperty IPAddress
 
 if ($networkIps) {
-    Write-Success "[OK] Available on network:"
-    foreach ($ip in $networkIps) {
-        Write-Host "  http://${ip}:${Port}" -ForegroundColor Green
-    }
-    Write-Info "`nVR headsets can connect to any of these addresses"
+    Write-Success "[OK] Network interfaces detected"
 } else {
     Write-Warning "[WARNING] No network interfaces detected. VR headsets may not be able to connect."
+    Write-Warning "Make sure your computer is connected to the same network as your VR headset."
 }
 
 # Set environment variable
@@ -151,13 +152,30 @@ if (-not (Test-Path "node_modules")) {
 
 # Start the development server with timeout handling
 $env:PORT = $Port
-Write-Info "`nStarting Next.js on port $Port..."
-Write-Host "`nServer URLs:" -ForegroundColor Yellow
-Write-Host "- Local:   http://localhost:$Port" -ForegroundColor Green
-if ($networkIps -and $networkIps.Count -gt 0) {
-    Write-Host "- Network: http://$($networkIps[0]):$Port" -ForegroundColor Green
-}
-Write-Host "`nPress Ctrl+C to stop the server`n" -ForegroundColor Cyan
+Write-Info "`nStarting Next.js on port $Port...`n"
 
-# Run npm directly - Next.js will handle the rest
-npm run dev
+# Display addresses before starting
+Write-Host "============================================================" -ForegroundColor Yellow
+Write-Host "                    SERVER ADDRESSES                        " -ForegroundColor Yellow
+Write-Host "============================================================" -ForegroundColor Yellow
+Write-Host " Desktop Browser:" -ForegroundColor Yellow
+Write-Host "   http://localhost:$Port" -ForegroundColor Green
+Write-Host ""
+if ($networkIps -and $networkIps.Count -gt 0) {
+    Write-Host " VR HEADSET (use one of these):" -ForegroundColor Yellow
+    foreach ($ip in $networkIps) {
+        $url = "http://${ip}:${Port}"
+        Write-Host "   $url" -ForegroundColor Cyan
+    }
+} else {
+    Write-Host " VR HEADSET: No network address detected!" -ForegroundColor Red
+    Write-Host " Connect to Wi-Fi and restart this script." -ForegroundColor Red
+}
+Write-Host "============================================================" -ForegroundColor Yellow
+Write-Host ""
+
+# Run npm dev with hostname binding to 0.0.0.0 for network access
+npm run dev -- --hostname 0.0.0.0
+
+# Print addresses again after server stops (user pressed Ctrl+C)
+Write-Host "`n`nServer stopped." -ForegroundColor Yellow

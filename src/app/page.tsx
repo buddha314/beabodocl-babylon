@@ -26,6 +26,9 @@ import "@babylonjs/core/Materials/standardMaterial";
 // WebXR imports
 import { WebXRDefaultExperience } from "@babylonjs/core/XR/webXRDefaultExperience";
 import "@babylonjs/core/XR/features/WebXRDepthSensing";
+
+// VR Movement System
+import { VRMovementSystem } from "@/lib/vr/movement";
 import "@babylonjs/core/Helpers/sceneHelpers";
 
 import "@babylonjs/core/Rendering/depthRendererSceneComponent";
@@ -131,6 +134,10 @@ export default function Home() {
 
 			console.log("WebXR initialized successfully");
 
+			// Initialize VR Movement System for strafing controls
+			const vrMovement = new VRMovementSystem(scene, xrHelper);
+			console.log("VR Movement System initialized with strafing support");
+
 			// Enable controller pointer selection for GUI interaction
 			if (xrHelper.pointerSelection) {
 				console.log("VR controller pointer selection enabled");
@@ -141,6 +148,7 @@ export default function Home() {
 				console.log("WebXR state changed:", state);
 				if (state === 2) { // IN_XR
 					console.log("Entered VR mode - chat panel is interactive with controllers");
+					console.log("Left joystick: Y-axis = Forward/Back, X-axis = Strafe Left/Right");
 				}
 			});
 		} catch (error) {

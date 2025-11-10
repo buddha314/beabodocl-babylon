@@ -1,11 +1,10 @@
 {
     "meshes": [
         {
-            "name": "sky",
-            "id": "6a927ea7-51d9-4248-9b80-4d34b53b386e",
-            "uniqueId": 1705530727566,
-            "type": "Mesh",
-            "tags": "modified",
+            "name": "ground",
+            "id": "e0a5d0cd-c51b-4367-8c47-c588fde00270",
+            "uniqueId": 1762740362566,
+            "type": "GroundMesh",
             "position": [
                 0,
                 0,
@@ -17,9 +16,9 @@
                 0
             ],
             "scaling": [
-                100,
-                100,
-                100
+                1,
+                1,
+                1
             ],
             "localMatrix": [
                 1,
@@ -43,7 +42,7 @@
             "isVisible": true,
             "infiniteDistance": false,
             "pickable": true,
-            "receiveShadows": false,
+            "receiveShadows": true,
             "billboardMode": 0,
             "visibility": 1,
             "alwaysSelectAsActiveMesh": false,
@@ -62,12 +61,27 @@
             "isBlocker": false,
             "sideOrientation": 1,
             "isUnIndexed": false,
-            "geometryUniqueId": 12,
-            "geometryId": "d2a60991-6acc-4d76-b3d8-67e1d6662870",
+            "geometryUniqueId": 1762740362567,
+            "geometryId": "92fc22b5-e48c-47e4-9387-debdb613c5d6",
             "subMeshes": null,
-            "materialUniqueId": 1705193880869.0974,
-            "materialId": "b2346078-7465-4c63-8877-44b542584898",
-            "metadata": {},
+            "materialUniqueId": 1762740455184,
+            "materialId": "c1016c80-f54e-47b7-a840-8e836b766d2a",
+            "metadata": {
+                "type": "Ground",
+                "width": 10,
+                "height": 10,
+                "subdivisions": 1,
+                "heightMapTexturePath": null,
+                "minHeight": 0,
+                "maxHeight": 150,
+                "smoothFactor": 0,
+                "alphaFilter": 0,
+                "colorFilter": [
+                    1,
+                    1,
+                    1
+                ]
+            },
             "instances": [],
             "animations": [],
             "ranges": [],
@@ -80,48 +94,56 @@
                 0,
                 0
             ],
-            "renderOverlay": true,
+            "renderOverlay": false,
             "applyFog": true,
-            "delayLoadingFile": "assets/example.scene/geometries/d2a60991-6acc-4d76-b3d8-67e1d6662870.babylonbinarymeshdata",
+            "subdivisionsX": 32,
+            "subdivisionsY": 32,
+            "minX": -512,
+            "maxX": 512,
+            "minZ": -512,
+            "maxZ": 512,
+            "width": 1024,
+            "height": 1024,
+            "delayLoadingFile": "assets/example.scene/geometries/92fc22b5-e48c-47e4-9387-debdb613c5d6.babylonbinarymeshdata",
             "boundingBoxMaximum": [
-                2500,
-                2500,
-                2500
+                5,
+                0,
+                5
             ],
             "boundingBoxMinimum": [
-                -2500,
-                -2500,
-                -2500
+                -5,
+                0,
+                -5
             ],
             "_binaryInfo": {
                 "positionsAttrDesc": {
-                    "count": 72,
+                    "count": 12,
                     "stride": 3,
                     "offset": 0,
                     "dataType": 1
                 },
                 "normalsAttrDesc": {
-                    "count": 72,
+                    "count": 12,
                     "stride": 3,
-                    "offset": 288,
+                    "offset": 48,
                     "dataType": 1
                 },
                 "uvsAttrDesc": {
-                    "count": 48,
+                    "count": 8,
                     "stride": 2,
-                    "offset": 576,
+                    "offset": 96,
                     "dataType": 1
                 },
                 "indicesAttrDesc": {
-                    "count": 36,
+                    "count": 6,
                     "stride": 1,
-                    "offset": 768,
+                    "offset": 128,
                     "dataType": 0
                 },
                 "subMeshesAttrDesc": {
                     "count": 1,
                     "stride": 5,
-                    "offset": 912,
+                    "offset": 152,
                     "dataType": 0
                 }
             },
@@ -138,41 +160,57 @@
     "materials": [
         {
             "tags": null,
-            "luminance": 1,
-            "turbidity": 10,
-            "rayleigh": 2,
-            "mieCoefficient": 0.005,
-            "mieDirectionalG": 0.8,
-            "distance": 500,
-            "inclination": 0.2,
-            "azimuth": 0.25,
-            "sunPosition": [
-                1.7995733195149916e-14,
-                404.5084971874737,
-                -293.8926261462366
-            ],
-            "useSunPosition": false,
-            "cameraOffset": [
+            "ambient": [
                 0,
                 0,
                 0
             ],
-            "up": [
+            "diffuse": [
+                0.3,
+                0.4,
+                0.4
+            ],
+            "specular": [
+                0.2,
+                0.2,
+                0.2
+            ],
+            "emissive": [
                 0,
-                1,
+                0,
                 0
             ],
-            "dithering": false,
-            "id": "b2346078-7465-4c63-8877-44b542584898",
-            "name": "sky",
-            "metadata": {},
+            "specularPower": 64,
+            "useAlphaFromDiffuseTexture": false,
+            "useEmissiveAsIllumination": false,
+            "linkEmissiveWithDiffuse": false,
+            "useSpecularOverAlpha": false,
+            "useReflectionOverAlpha": false,
+            "disableLighting": false,
+            "useObjectSpaceNormalMap": false,
+            "useParallax": false,
+            "useParallaxOcclusion": false,
+            "parallaxScaleBias": 0.05,
+            "roughness": 0,
+            "indexOfRefraction": 0.98,
+            "invertRefractionY": true,
+            "alphaCutOff": 0.4,
+            "useLightmapAsShadowmap": false,
+            "useReflectionFresnelFromSpecular": false,
+            "useGlossinessFromSpecularMapAlpha": false,
+            "maxSimultaneousLights": 32,
+            "invertNormalMapX": false,
+            "invertNormalMapY": false,
+            "twoSidedLighting": false,
+            "applyDecalMapAfterDetailMap": false,
+            "id": "c1016c80-f54e-47b7-a840-8e836b766d2a",
+            "name": "groundMat",
             "checkReadyOnEveryCall": false,
             "checkReadyOnlyOnce": false,
             "state": "",
             "alpha": 1,
             "backFaceCulling": true,
             "cullBackFaces": true,
-            "sideOrientation": 1,
             "_alphaMode": [
                 2
             ],
@@ -188,7 +226,7 @@
             "zOffsetUnits": 0,
             "pointsCloud": false,
             "fillMode": 0,
-            "_setVertexOutputInvariant": false,
+            "_isVertexOutputInvariant": false,
             "stencil": {
                 "tags": null,
                 "func": 519,
@@ -204,9 +242,21 @@
                 "mask": 255,
                 "enabled": false
             },
-            "uniqueId": 1705193880869.0974,
-            "plugins": {},
-            "customType": "BABYLON.SkyMaterial"
+            "uniqueId": 1762740455184,
+            "plugins": {
+                "DetailMapConfiguration": {
+                    "tags": null,
+                    "diffuseBlendLevel": 1,
+                    "roughnessBlendLevel": 1,
+                    "bumpLevel": 1,
+                    "normalBlendMethod": 0,
+                    "isEnabled": false,
+                    "name": "DetailMap",
+                    "priority": 140,
+                    "resolveIncludes": false,
+                    "registerForExtraEvents": false
+                }
+            }
         }
     ],
     "geometries": {
@@ -219,7 +269,22 @@
         "torusKnots": [],
         "vertexData": []
     },
-    "metadata": {},
+    "metadata": {
+        "type": "Ground",
+        "width": 10,
+        "height": 10,
+        "subdivisions": 1,
+        "heightMapTexturePath": null,
+        "minHeight": 0,
+        "maxHeight": 150,
+        "smoothFactor": 0,
+        "alphaFilter": 0,
+        "colorFilter": [
+            1,
+            1,
+            1
+        ]
+    },
     "basePoseMatrix": [
         1,
         0,

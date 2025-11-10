@@ -27,8 +27,6 @@ import "@babylonjs/core/Materials/standardMaterial";
 import { WebXRDefaultExperience } from "@babylonjs/core/XR/webXRDefaultExperience";
 import "@babylonjs/core/XR/features/WebXRDepthSensing";
 
-// VR Movement System
-import { VRMovementSystem } from "@/lib/vr/movement";
 import "@babylonjs/core/Helpers/sceneHelpers";
 
 import "@babylonjs/core/Rendering/depthRendererSceneComponent";
@@ -50,7 +48,6 @@ import { loadScene } from "babylonjs-editor-tools";
 import { scriptsMap } from "@/scripts";
 import ApiTest from "@/components/ApiTest";
 import AgentChatTest from "@/components/AgentChatTest";
-import { ChatPanel3D } from "@/lib/ChatPanel3D";
 import { SceneErrorBoundary } from "@/components/ErrorBoundary";
 
 export default function Home() {
@@ -92,78 +89,43 @@ export default function Home() {
 
 	async function handleLoad(engine: Engine, scene: Scene) {
 		try {
-			// ===== PHASE 1 TEST: Load scene from Babylon Editor =====
 			console.log("==============================================");
-			console.log("PHASE 1 TEST: Loading scene from Babylon Editor");
+			console.log("PHASE 4: Loading scene from Babylon Editor");
 			console.log("==============================================");
 			
 			const havok = await HavokPhysics();
 			
-			// DISABLED: Manual scene creation
-			// We're testing loadScene from editor files
+			// Load the scene from Babylon Editor
+			// This modifies the scene object in-place
+			console.log("Loading scene from ./scene/");
+			console.log("Scripts map:", Object.keys(scriptsMap));
 			
-			console.log("Scene passed from useEffect (manually created)");
+			await loadScene("./scene/", "config.json", scene, scriptsMap);
+			
+			console.log("Scene loaded successfully!");
 			console.log("Cameras:", scene.cameras.map(c => `${c.name} (${c.getClassName()})`));
 			console.log("Lights:", scene.lights.map(l => `${l.name} (${l.getClassName()})`));
 			console.log("Meshes:", scene.meshes.map(m => m.name));
 			console.log("Active Camera:", scene.activeCamera?.name || "none");
+			console.log("==============================================");
 			
 			// Enable physics
 			scene.enablePhysics(new Vector3(0, -981, 0), new HavokPlugin(true, havok));
 			
-			// Import necessary classes for fallback creation
-			const { MeshBuilder, StandardMaterial, Color3, ArcRotateCamera, HemisphericLight } = await import("@babylonjs/core");
-
-			// Check for camera and create if missing
-			let camera = scene.getCameraByName("camera");
-			if (!camera) {
-				console.warn("⚠️ No camera found in scene, creating ArcRotateCamera");
-				camera = new ArcRotateCamera("camera", Math.PI, Math.PI / 2.5, 8, new Vector3(0, 2, -5), scene);
-				camera.attachControl();
-				scene.activeCamera = camera;
-			} else {
-				console.log("✅ Camera found:", camera.name, camera.getClassName());
-				if (scene.activeCamera) {
-					scene.activeCamera.attachControl();
-				}
-			}
-
-			// Check for light and create if missing
-			let light = scene.getLightByName("light") || scene.getLightByName("sun");
-			if (!light) {
-				console.warn("⚠️ No light found in scene, creating HemisphericLight");
-				light = new HemisphericLight("light", new Vector3(0, 1, 0), scene);
-				light.intensity = 0.7;
-			} else {
-				console.log("✅ Light found:", light.name, light.getClassName());
-			}
-
-			// Check for ground and create if missing
-			let ground = scene.getMeshByName("ground");
-			if (!ground) {
-				console.warn("⚠️ No ground found in scene, creating manually");
-				ground = MeshBuilder.CreateGround("ground", { width: 10, height: 10 }, scene);
-				const groundMaterial = new StandardMaterial("groundMaterial", scene);
-				groundMaterial.diffuseColor = new Color3(0.3, 0.3, 0.4);
-				ground.material = groundMaterial;
-			} else {
-				console.log("✅ Ground found:", ground.name);
-			}
-
-			// Check for chat panel and create if missing
-			let chatPanelMesh = scene.getMeshByName("chatPanel");
-			if (!chatPanelMesh) {
-				console.warn("⚠️ No chatPanel found in scene, creating ChatPanel3D manually");
-				const chatPanel = new ChatPanel3D(scene, new Vector3(0, 2, -5));
-				chatPanel.lookAt(new Vector3(0, 0, 0));
-			} else {
-				console.log("✅ Chat panel mesh found:", chatPanelMesh.name);
-			}
-
-			console.log("Scene setup complete");
-
+			// Attach camera controls
 			if (scene.activeCamera) {
 				scene.activeCamera.attachControl();
+				console.log("✅ Camera controls attached");
+			} else {
+				console.warn("⚠️ No active camera found");
+			}
+			
+			// Get the ground mesh for WebXR floor configuration
+			const ground = scene.getMeshByName("ground");
+			if (ground) {
+				console.log("✅ Ground mesh found for WebXR");
+			} else {
+				console.warn("⚠️ Ground mesh not found - WebXR may not have floor mesh");
 			}
 
 			// Initialize WebXR with default experience
@@ -175,9 +137,15 @@ export default function Home() {
 
 				console.log("WebXR initialized successfully");
 
-				// Initialize VR Movement System for strafing controls
-				const vrMovement = new VRMovementSystem(scene, xrHelper);
-				console.log("VR Movement System initialized with strafing support");
+				// Initialize VR Movement Script if it exists in the scene
+				// The script stores itself in scene.metadata when it loads
+				const vrMovementScript = scene.metadata?.vrMovementScript;
+				if (vrMovementScript && typeof vrMovementScript.initializeWithXR === 'function') {
+					vrMovementScript.initializeWithXR(xrHelper);
+					console.log("✅ VR Movement Script initialized with WebXR");
+				} else {
+					console.warn("⚠️ VR Movement Script not found in scene - attach vrMovement.ts to a node in the editor");
+				}
 
 				// CRITICAL: Make sure the chat panel mesh is in the pointer selection meshes
 				if (xrHelper.pointerSelection) {

@@ -5,9 +5,11 @@
 
 import { loadScene, _applyScriptsForObject } from "babylonjs-editor-tools";
 import * as scripts_box from "./scripts/box";
+import * as scripts_chatPanel from "./scripts/chatPanel";
 
 export const scriptsMap = {
-    "scripts/box.ts": scripts_box
+    "scripts/box.ts": scripts_box,
+    "scripts/chatPanel.ts": scripts_chatPanel
 };
 
 export { loadScene, _applyScriptsForObject };

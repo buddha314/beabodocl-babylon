@@ -94,19 +94,34 @@ export default function Home() {
 		try {
 			// ===== PHASE 1 TEST: Load scene from Babylon Editor =====
 			console.log("==============================================");
-			console.log("PHASE 1 TEST: Loading scene from Babylon Editor");
+			console.log("PHASE 1 TEST: Testing loadScene API");
 			console.log("==============================================");
 			
 			const havok = await HavokPhysics();
 			
-			// DISABLED: Manual scene creation
-			// We're testing loadScene from editor files
+			// TEST 1: Try to load scene from editor
+			// Note: This will REPLACE the current scene with editor scene
+			// For testing, we'll log what we get and then add missing objects
+			try {
+				console.log("Attempting to load scene from ./assets/example.scene");
+				console.log("Scripts map:", Object.keys(scriptsMap));
+				
+				// IMPORTANT: loadScene creates a NEW scene, so we need to capture it
+				// For now, we'll skip this and manually inspect what's in the scene
+				// const loadedScene = await loadScene("./assets/example.scene", engine, scriptsMap);
+				
+				// Instead, let's examine what the current (manual) scene has
+				console.log("Current scene contents (manually created in useEffect):");
+			} catch (error) {
+				console.error("loadScene failed:", error);
+			}
 			
-			console.log("Scene passed from useEffect (manually created)");
+			console.log("Scene object type:", scene.constructor.name);
 			console.log("Cameras:", scene.cameras.map(c => `${c.name} (${c.getClassName()})`));
 			console.log("Lights:", scene.lights.map(l => `${l.name} (${l.getClassName()})`));
 			console.log("Meshes:", scene.meshes.map(m => m.name));
 			console.log("Active Camera:", scene.activeCamera?.name || "none");
+			console.log("==============================================");
 			
 			// Enable physics
 			scene.enablePhysics(new Vector3(0, -981, 0), new HavokPlugin(true, havok));

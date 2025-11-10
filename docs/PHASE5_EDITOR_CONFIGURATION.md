@@ -145,8 +145,7 @@ const chatPanel = new ChatPanel3D(scene, new Vector3(0, 2, -5));
      - Case-sensitive!
 
 2. **Configure mesh properties**
-   - Width: 4
-   - Height: 3
+   - Scaling: X=4, Y=3, Z=1 (default plane is 1x1, so scale to 4x3)
    - Side Orientation: Double Side (renders both front and back)
    - Position: X=0, Y=2, Z=-5 (in front of camera)
    - Rotation: X=0, Y=0, Z=0 (or adjust to face camera if needed)

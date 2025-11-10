@@ -69,7 +69,17 @@
             "metadata": {
                 "type": "Ground",
                 "width": 102400,
-                "height": 102400
+                "height": 102400,
+                "minHeight": 0,
+                "maxHeight": 150,
+                "smoothFactor": 0,
+                "heightMapTexturePath": null,
+                "alphaFilter": 0,
+                "colorFilter": [
+                    1,
+                    1,
+                    1
+                ]
             },
             "instances": [],
             "animations": [],
@@ -83,7 +93,7 @@
                 0,
                 0
             ],
-            "renderOverlay": true,
+            "renderOverlay": false,
             "applyFog": true,
             "subdivisionsX": 1,
             "subdivisionsY": 1,
@@ -273,52 +283,6 @@
             "useRadianceOcclusion": true,
             "unlit": false,
             "applyDecalMapAfterDetailMap": false,
-            "_imageProcessingConfiguration": {
-                "tags": null,
-                "colorCurves": {
-                    "tags": null,
-                    "_globalHue": 30,
-                    "_globalDensity": 0,
-                    "_globalSaturation": 0,
-                    "_globalExposure": 0,
-                    "_highlightsHue": 30,
-                    "_highlightsDensity": 0,
-                    "_highlightsSaturation": 0,
-                    "_highlightsExposure": 0,
-                    "_midtonesHue": 30,
-                    "_midtonesDensity": 0,
-                    "_midtonesSaturation": 0,
-                    "_midtonesExposure": 0
-                },
-                "_colorCurvesEnabled": false,
-                "_colorGradingEnabled": false,
-                "_colorGradingWithGreenDepth": true,
-                "_colorGradingBGR": true,
-                "_exposure": 1,
-                "_toneMappingEnabled": false,
-                "_toneMappingType": 0,
-                "_contrast": 1,
-                "vignetteStretch": 0,
-                "vignetteCenterX": 0,
-                "vignetteCenterY": 0,
-                "vignetteWeight": 1.5,
-                "vignetteColor": [
-                    0,
-                    0,
-                    0,
-                    0
-                ],
-                "vignetteCameraFov": 0.5,
-                "_vignetteBlendMode": 0,
-                "_vignetteEnabled": false,
-                "_ditheringEnabled": false,
-                "_ditheringIntensity": 0.00392156862745098,
-                "_skipFinalColorClamp": false,
-                "_applyByPostProcess": false,
-                "_isEnabled": true,
-                "outputTextureWidth": 0,
-                "outputTextureHeight": 0
-            },
             "id": "27c18987-1817-46cd-bdb0-2328f55c7f8b",
             "name": "ground",
             "checkReadyOnEveryCall": false,
@@ -343,7 +307,7 @@
             "zOffsetUnits": 0,
             "pointsCloud": false,
             "fillMode": 0,
-            "_setVertexOutputInvariant": false,
+            "_isVertexOutputInvariant": false,
             "transparencyMode": 0,
             "stencil": {
                 "tags": null,
@@ -510,7 +474,17 @@
     "metadata": {
         "type": "Ground",
         "width": 102400,
-        "height": 102400
+        "height": 102400,
+        "minHeight": 0,
+        "maxHeight": 150,
+        "smoothFactor": 0,
+        "heightMapTexturePath": null,
+        "alphaFilter": 0,
+        "colorFilter": [
+            1,
+            1,
+            1
+        ]
     },
     "basePoseMatrix": [
         1,

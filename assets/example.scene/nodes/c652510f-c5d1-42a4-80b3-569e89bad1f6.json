@@ -1,0 +1,50 @@
+{
+    "tags": null,
+    "position": [
+        0,
+        0,
+        0
+    ],
+    "rotation": [
+        0,
+        0,
+        0
+    ],
+    "scaling": [
+        1,
+        1,
+        1
+    ],
+    "billboardMode": 0,
+    "scalingDeterminant": 1,
+    "infiniteDistance": false,
+    "ignoreNonUniformScaling": false,
+    "reIntegrateRotationIntoRotationQuaternion": false,
+    "name": "vrMovementController",
+    "id": "c652510f-c5d1-42a4-80b3-569e89bad1f6",
+    "state": "",
+    "metadata": {},
+    "type": "TransformNode",
+    "uniqueId": 1762741141517,
+    "localMatrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+    ],
+    "isEnabled": true,
+    "animations": [],
+    "ranges": []
+}

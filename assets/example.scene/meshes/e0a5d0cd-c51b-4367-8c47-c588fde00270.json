@@ -80,6 +80,38 @@
                     1,
                     1,
                     1
+                ],
+                "scripts": [
+                    {
+                        "enabled": true,
+                        "key": "scripts/navMesh.ts",
+                        "values": {
+                            "cellSize": {
+                                "type": "number",
+                                "value": 0.1
+                            },
+                            "cellHeight": {
+                                "type": "number",
+                                "value": 0.1
+                            },
+                            "agentHeight": {
+                                "type": "number",
+                                "value": 0.5
+                            },
+                            "agentRadius": {
+                                "type": "number",
+                                "value": 0.1
+                            },
+                            "agentMaxSlope": {
+                                "type": "number",
+                                "value": 0
+                            },
+                            "showDebug": {
+                                "type": "boolean",
+                                "value": false
+                            }
+                        }
+                    }
                 ]
             },
             "instances": [],
@@ -283,6 +315,38 @@
             1,
             1,
             1
+        ],
+        "scripts": [
+            {
+                "enabled": true,
+                "key": "scripts/navMesh.ts",
+                "values": {
+                    "cellSize": {
+                        "type": "number",
+                        "value": 0.1
+                    },
+                    "cellHeight": {
+                        "type": "number",
+                        "value": 0.1
+                    },
+                    "agentHeight": {
+                        "type": "number",
+                        "value": 0.5
+                    },
+                    "agentRadius": {
+                        "type": "number",
+                        "value": 0.1
+                    },
+                    "agentMaxSlope": {
+                        "type": "number",
+                        "value": 0
+                    },
+                    "showDebug": {
+                        "type": "boolean",
+                        "value": false
+                    }
+                }
+            }
         ]
     },
     "basePoseMatrix": [

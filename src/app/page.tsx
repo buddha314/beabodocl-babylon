@@ -18,6 +18,7 @@ import "@babylonjs/core/Cameras/universalCamera";
 import "@babylonjs/core/Meshes/groundMesh";
 
 import "@babylonjs/core/Lights/directionalLight";
+import "@babylonjs/core/Lights/hemisphericLight";
 import "@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent";
 
 import "@babylonjs/core/Materials/PBR/pbrMaterial";
@@ -56,8 +57,12 @@ export default function Home() {
 
 	useEffect(() => {
 		if (!canvasRef.current) {
+			console.error("❌ Canvas ref is null!");
 			return;
 		}
+
+		console.log("✅ Canvas element exists");
+		console.log("   Canvas size:", canvasRef.current.width, "x", canvasRef.current.height);
 
 		const engine = new Engine(canvasRef.current, true, {
 			stencil: true,
@@ -70,7 +75,12 @@ export default function Home() {
 			failIfMajorPerformanceCaveat: false,
 		});
 
+		console.log("✅ Engine created");
+		console.log("   WebGL version:", engine.webGLVersion);
+		console.log("   Hardware scaling:", engine.getHardwareScalingLevel());
+
 		const scene = new Scene(engine);
+		console.log("✅ Scene created");
 
 		handleLoad(engine, scene);
 
@@ -93,94 +103,47 @@ export default function Home() {
 			console.log("PHASE 4: Loading scene from Babylon Editor");
 			console.log("==============================================");
 			
-			const havok = await HavokPhysics();
+			// FIRST: Test basic rendering before loading the scene
+			console.log("🧪 BASIC RENDERING TEST - Creating simple scene...");
+			const { MeshBuilder } = await import("@babylonjs/core/Meshes/meshBuilder");
+			const { StandardMaterial } = await import("@babylonjs/core/Materials/standardMaterial");
+			const { Color3 } = await import("@babylonjs/core/Maths/math.color");
+			const { UniversalCamera } = await import("@babylonjs/core/Cameras/universalCamera");
+			const { HemisphericLight } = await import("@babylonjs/core/Lights/hemisphericLight");
 			
-			// Load the scene from Babylon Editor
-			// This modifies the scene object in-place
-			console.log("Loading scene from ./scene/");
-			console.log("Scripts map:", Object.keys(scriptsMap));
+			// Create a simple camera
+			const testCamera = new UniversalCamera("testCamera", new Vector3(0, 2, -10), scene);
+			testCamera.setTarget(Vector3.Zero());
+			scene.activeCamera = testCamera;
+			testCamera.attachControl();
+			console.log("✅ Test camera created at [0, 2, -10] looking at origin");
 			
-			await loadScene("./scene/", "config.json", scene, scriptsMap);
+			// Create a simple light
+			const testLight = new HemisphericLight("testLight", new Vector3(0, 1, 0), scene);
+			testLight.intensity = 1;
+			console.log("✅ Test light created");
 			
-			console.log("Scene loaded successfully!");
-			console.log("Cameras:", scene.cameras.map(c => `${c.name} (${c.getClassName()})`));
-			console.log("Lights:", scene.lights.map(l => `${l.name} (${l.getClassName()})`));
-			console.log("Meshes:", scene.meshes.map(m => m.name));
-			console.log("Active Camera:", scene.activeCamera?.name || "none");
-			console.log("==============================================");
+			// Create a simple box
+			const simpleBox = MeshBuilder.CreateBox("simpleBox", { size: 2 }, scene);
+			simpleBox.position = new Vector3(0, 0, 0);
+			const simpleMat = new StandardMaterial("simpleMat", scene);
+			simpleMat.diffuseColor = new Color3(1, 0, 0); // Red
+			simpleMat.emissiveColor = new Color3(1, 0, 0); // Bright red, self-lit
+			simpleBox.material = simpleMat;
+			console.log("✅ Simple red box created at origin");
 			
-			// Enable physics
-			scene.enablePhysics(new Vector3(0, -981, 0), new HavokPlugin(true, havok));
-			
-			// Attach camera controls
-			if (scene.activeCamera) {
-				scene.activeCamera.attachControl();
-				console.log("✅ Camera controls attached");
-			} else {
-				console.warn("⚠️ No active camera found");
-			}
-			
-			// Get the ground mesh for WebXR floor configuration
-			const ground = scene.getMeshByName("ground");
-			if (ground) {
-				console.log("✅ Ground mesh found for WebXR");
-			} else {
-				console.warn("⚠️ Ground mesh not found - WebXR may not have floor mesh");
-			}
-
-			// Initialize WebXR with default experience
-			try {
-				const xrHelper = await WebXRDefaultExperience.CreateAsync(scene, {
-					floorMeshes: ground ? [ground] : [],
-					optionalFeatures: true,
-				});
-
-				console.log("WebXR initialized successfully");
-
-				// Initialize VR Movement Script if it exists in the scene
-				// The script stores itself in scene.metadata when it loads
-				const vrMovementScript = scene.metadata?.vrMovementScript;
-				if (vrMovementScript && typeof vrMovementScript.initializeWithXR === 'function') {
-					vrMovementScript.initializeWithXR(xrHelper);
-					console.log("✅ VR Movement Script initialized with WebXR");
-				} else {
-					console.warn("⚠️ VR Movement Script not found in scene - attach vrMovement.ts to a node in the editor");
-				}
-
-				// CRITICAL: Make sure the chat panel mesh is in the pointer selection meshes
-				if (xrHelper.pointerSelection) {
-					xrHelper.pointerSelection.attach();
-					console.log("VR controller pointer selection enabled");
-				}
-
-				// Log when entering/exiting XR
-				xrHelper.baseExperience.onStateChangedObservable.add((state) => {
-					console.log("WebXR state changed:", state);
-					if (state === 2) { // IN_XR
-						setIsInVR(true);
-						console.log("==============================================");
-						console.log("ENTERED VR MODE");
-						console.log("==============================================");
-						console.log("Chat Panel Controls:");
-						console.log("- Point controller at panel");
-						console.log("- Pull trigger to click buttons/type");
-						console.log("- Use virtual keyboard to type messages");
-						console.log("");
-						console.log("Movement Controls:");
-						console.log("- Left joystick: Y-axis = Forward/Back");
-						console.log("- Left joystick: X-axis = Strafe Left/Right");
-						console.log("==============================================");
-					} else {
-						setIsInVR(false);
-					}
-				});
-			} catch (error) {
-				console.warn("WebXR not supported or failed to initialize:", error);
-			}
-
+			// Start rendering immediately
+			console.log("🔄 Starting test render loop...");
 			engine.runRenderLoop(() => {
 				scene.render();
 			});
+			console.log("✅ Test render loop started");
+			console.log("🎥 Active camera:", scene.activeCamera?.name);
+			console.log("==============================================");
+			console.log("⚠️ STOPPING HERE - If you see a red box, basic rendering works!");
+			console.log("⚠️ Check the browser window now.");
+			console.log("==============================================");
+			
 		} catch (error) {
 			console.error("Failed to initialize 3D scene:", error);
 			throw error; // Re-throw to be caught by error boundary

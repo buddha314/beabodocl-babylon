@@ -65,9 +65,24 @@ The project was created from a Babylon Editor template but evolved to use manual
    ```
 
 **Acceptance Criteria:**
-- [ ] Understand loadScene parameters
-- [ ] Know what scene objects exist in example.scene
-- [ ] Can load basic scene without errors
+- [x] ✅ Understand loadScene parameters
+- [x] ✅ Know what scene objects exist in example.scene (box, camera, light only)
+- [x] ✅ Can load basic scene without errors
+- [x] ✅ Pinned babylonjs-editor-tools to v5.1.0
+- [x] ✅ Fixed scripts.ts exports for v5.1.0 compatibility
+- [x] ✅ Documented findings in PHASE1_LOADSCENE_TEST.md
+
+**Phase 1 Status**: ✅ COMPLETED (November 9, 2025)
+
+**Key Findings:**
+- babylonjs-editor-tools v5.1.0 is compatible (v5.1.1 doesn't exist on npm)
+- loadScene() creates a NEW scene, doesn't modify existing
+- Editor scene contains only template objects (box, camera, light)
+- Browser scene must be recreated in editor for full integration
+- Hybrid approach is mandatory: loadScene() + create missing objects
+- Removed non-existent exports from scripts.ts (scriptsDictionary, _removeRegisteredScriptInstance)
+
+**Next Steps**: Phase 2 - Convert ChatPanel3D to editor script
 
 ---
 

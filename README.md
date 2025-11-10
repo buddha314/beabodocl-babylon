@@ -1,5 +1,13 @@
 # BeaboDOCL VR Research Interface
 
+> **⚠️ MIGRATION NOTICE**: This Babylon.js implementation is being deprecated due to the difficulty of creating and editing scenes programmatically. Development has moved to a Unity-based implementation at:
+> 
+> **🔗 https://github.com/buddha314/beabodocl-unity**
+>
+> The Unity version provides better tooling for VR scene creation and editing. This repository is kept for reference only.
+
+---
+
 A VR research interface for biomedical paper discovery and exploration, combining **solarpunk** optimism with **cyberpunk** technology in an immersive 3D environment.
 
 ---

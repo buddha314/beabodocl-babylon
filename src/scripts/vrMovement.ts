@@ -4,6 +4,7 @@ import { Scene } from "@babylonjs/core/scene";
 import { IScript, visibleAsNumber, visibleAsBoolean } from "babylonjs-editor-tools";
 import { WebXRDefaultExperience } from "@babylonjs/core/XR/webXRDefaultExperience";
 import { WebXRInputSource } from "@babylonjs/core/XR/webXRInputSource";
+import { RecastJSPlugin } from "@babylonjs/core/Navigation/Plugins/recastJSPlugin";
 
 /**
  * VR Movement Script - Enables VR locomotion with strafing
@@ -22,12 +23,16 @@ export default class VRMovementScript implements IScript {
   @visibleAsNumber("Joystick Deadzone", { min: 0, max: 0.5 })
   private deadzone: number = 0.15;
 
+  @visibleAsBoolean("Use NavMesh Collision")
+  private useNavMesh: boolean = true;
+
   @visibleAsBoolean("Enabled")
   private enabled: boolean = true;
 
   // Private properties
   private scene!: Scene;
   private xrHelper?: WebXRDefaultExperience;
+  private navigationPlugin?: RecastJSPlugin;
 
   /**
    * Constructor - receives the node this script is attached to
@@ -41,7 +46,17 @@ export default class VRMovementScript implements IScript {
     this.scene = this.node.getScene();
     
     console.log("[VRMovementScript] Script initialized on node:", this.node.name);
-    console.log("[VRMovementScript] Settings - Speed:", this.movementSpeed, "Deadzone:", this.deadzone);
+    console.log("[VRMovementScript] Settings - Speed:", this.movementSpeed, "Deadzone:", this.deadzone, "NavMesh:", this.useNavMesh);
+
+    // Get navigation plugin from scene metadata if available
+    if (this.useNavMesh) {
+      this.navigationPlugin = this.scene.metadata?.navigationPlugin;
+      if (this.navigationPlugin) {
+        console.log("[VRMovementScript] NavMesh collision detection enabled");
+      } else {
+        console.warn("[VRMovementScript] NavMesh enabled but no navigation plugin found in scene");
+      }
+    }
 
     // Store a reference in scene metadata so page.tsx can initialize us with WebXR
     const metadata = this.scene.metadata || {};
@@ -145,7 +160,22 @@ export default class VRMovementScript implements IScript {
 
     // Apply movement with speed scaling
     const speed = this.movementSpeed * deltaTime;
-    camera.position.addInPlace(moveVector.scale(speed));
+    const proposedPosition = camera.position.clone().add(moveVector.scale(speed));
+
+    // Use NavMesh collision detection if enabled
+    if (this.useNavMesh && this.navigationPlugin) {
+      const closestPoint = this.navigationPlugin.getClosestPoint(proposedPosition);
+      if (closestPoint) {
+        // Constrain movement to navigation mesh
+        camera.position.copyFrom(closestPoint);
+      } else {
+        // If no valid point found, don't move
+        console.warn("[VRMovementScript] Proposed movement outside navigation mesh, blocked");
+      }
+    } else {
+      // No NavMesh, apply movement directly
+      camera.position.copyFrom(proposedPosition);
+    }
   }
 
   /**

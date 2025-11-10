@@ -201,7 +201,7 @@
             "parallaxScaleBias": 0.05,
             "disableLighting": false,
             "forceIrradianceInFragment": false,
-            "maxSimultaneousLights": 4,
+            "maxSimultaneousLights": 32,
             "invertNormalMapX": false,
             "invertNormalMapY": false,
             "twoSidedLighting": false,

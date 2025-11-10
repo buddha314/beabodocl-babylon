@@ -97,9 +97,44 @@ cp .env.example .env.local
 Edit `.env.local`:
 ```
 NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_DEBUG_MODE=false  # Set to "true" for verbose logging
 ```
 
 For detailed setup instructions including network scenarios and VR headset connectivity, see [STARTUP_GUIDE.md](./STARTUP_GUIDE.md).
+
+## Current Status
+
+### ✅ What's Working
+- **Basic Rendering**: Babylon.js 3D engine fully functional
+- **WebXR/VR Mode**: VR headset support (Quest 2/3 tested)
+- **VR Head Tracking**: Full 6DOF tracking in VR
+- **VR Controllers**: Detected and visible
+- **Babylon Editor Integration**: Scene loading architecture implemented
+- **NavMesh System**: Collision detection for VR movement
+- **Chat Panel**: 3D GUI interface for agent interaction
+- **Network Access**: VR headsets can connect over local network
+
+### ⚠️ Known Issues
+- **Scene Loading**: Full scene loading from Babylon Editor currently disabled due to asset loading issues
+  - **Workaround**: Minimal test scene (red box) renders correctly to verify basic functionality
+  - **Root Cause**: `loadScene()` from `babylonjs-editor-tools` failing to load mesh/texture assets
+  - **Status**: Under investigation - basic rendering confirmed working
+- **VR Controllers**: Visible but interaction needs refinement for optimal UX
+
+### 🚧 In Progress
+- **Debugging Scene Loader**: Investigating asset path resolution and binary mesh data loading
+- **VR Controller Refinement**: Fine-tuning pointer selection and interaction sensitivity
+
+### 📋 Next Steps
+1. **Fix Scene Loading** (P0) - Debug and resolve asset loading from Babylon Editor
+2. **VR Controller Polish** (P1) - Refine interaction mechanics
+3. **Scene Enhancement** (P2) - Add visual content once loading works
+4. **Performance Testing** (P3) - Profile and optimize for VR
+
+**For complete status details**, see:
+- [NEXT_PRIORITY.md](./NEXT_PRIORITY.md) - Current development priorities
+- [VR_BLACK_SCREEN_ISSUE.md](./VR_BLACK_SCREEN_ISSUE.md) - Scene loading investigation
+- [HANDOFF_2025-11-09_VR_TEST.md](./HANDOFF_2025-11-09_VR_TEST.md) - VR testing session details
 
 ## Documentation
 

@@ -5,51 +5,54 @@ import { useEffect, useRef, useState } from "react";
 import { Scene } from "@babylonjs/core/scene";
 import { Engine } from "@babylonjs/core/Engines/engine";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
-import { SceneLoaderFlags } from "@babylonjs/core/Loading/sceneLoaderFlags";
-import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
-
-import HavokPhysics from "@babylonjs/havok";
-
-import "@babylonjs/core/Loading/loadingScreen";
-import "@babylonjs/core/Loading/Plugins/babylonFileLoader";
 
 import "@babylonjs/core/Cameras/universalCamera";
-
-import "@babylonjs/core/Meshes/groundMesh";
-
-import "@babylonjs/core/Lights/directionalLight";
 import "@babylonjs/core/Lights/hemisphericLight";
-import "@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent";
-
-import "@babylonjs/core/Materials/PBR/pbrMaterial";
 import "@babylonjs/core/Materials/standardMaterial";
 
-// WebXR imports
-import { WebXRDefaultExperience } from "@babylonjs/core/XR/webXRDefaultExperience";
-import "@babylonjs/core/XR/features/WebXRDepthSensing";
-
-import "@babylonjs/core/Helpers/sceneHelpers";
-
-import "@babylonjs/core/Rendering/depthRendererSceneComponent";
-import "@babylonjs/core/Rendering/prePassRendererSceneComponent";
-
-import "@babylonjs/core/Materials/Textures/Loaders/envTextureLoader";
-
-import "@babylonjs/core/Physics";
-
-import "@babylonjs/materials/sky";
-
-import { loadScene } from "babylonjs-editor-tools";
-
-/**
- * We import the map of all scripts attached to objects in the editor.
- * This will allow the loader from `babylonjs-editor-tools` to attach the scripts to the
- * loaded objects (scene, meshes, transform nodes, lights, cameras, etc.).
- */
-import { scriptsMap } from "@/scripts";
 import ApiTest from "@/components/ApiTest";
 import AgentChatTest from "@/components/AgentChatTest";
 import { SceneErrorBoundary } from "@/components/ErrorBoundary";
+
+// Debug mode controlled by environment variable
+const DEBUG_MODE = process.env.NEXT_PUBLIC_DEBUG_MODE === "true";
+
+/**
+ * Creates a minimal test scene for verifying basic rendering functionality.
+ * Used for debugging when scene loading from Babylon Editor is disabled.
+ * 
+ * @param scene - The Babylon.js scene to populate
+ * @returns Promise that resolves when test scene is created
+ */
+async function createTestScene(scene: Scene): Promise<void> {
+	const { MeshBuilder } = await import("@babylonjs/core/Meshes/meshBuilder");
+	const { StandardMaterial } = await import("@babylonjs/core/Materials/standardMaterial");
+	const { Color3 } = await import("@babylonjs/core/Maths/math.color");
+	const { UniversalCamera } = await import("@babylonjs/core/Cameras/universalCamera");
+	const { HemisphericLight } = await import("@babylonjs/core/Lights/hemisphericLight");
+	
+	// Create camera
+	const testCamera = new UniversalCamera("testCamera", new Vector3(0, 2, -10), scene);
+	testCamera.setTarget(Vector3.Zero());
+	scene.activeCamera = testCamera;
+	testCamera.attachControl();
+	
+	// Create light
+	const testLight = new HemisphericLight("testLight", new Vector3(0, 1, 0), scene);
+	testLight.intensity = 1;
+	
+	// Create test mesh (red box)
+	const testBox = MeshBuilder.CreateBox("testBox", { size: 2 }, scene);
+	testBox.position = Vector3.Zero();
+	const material = new StandardMaterial("testMaterial", scene);
+	material.diffuseColor = new Color3(1, 0, 0);
+	material.emissiveColor = new Color3(1, 0, 0);
+	testBox.material = material;
+	
+	if (DEBUG_MODE) {
+		console.log("✅ Test scene created: Camera at [0,2,-10], Red box at origin");
+	}
+}
 
 export default function Home() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -57,12 +60,9 @@ export default function Home() {
 
 	useEffect(() => {
 		if (!canvasRef.current) {
-			console.error("❌ Canvas ref is null!");
+			console.error("❌ Canvas element not found");
 			return;
 		}
-
-		console.log("✅ Canvas element exists");
-		console.log("   Canvas size:", canvasRef.current.width, "x", canvasRef.current.height);
 
 		const engine = new Engine(canvasRef.current, true, {
 			stencil: true,
@@ -75,78 +75,64 @@ export default function Home() {
 			failIfMajorPerformanceCaveat: false,
 		});
 
-		console.log("✅ Engine created");
-		console.log("   WebGL version:", engine.webGLVersion);
-		console.log("   Hardware scaling:", engine.getHardwareScalingLevel());
-
 		const scene = new Scene(engine);
-		console.log("✅ Scene created");
+		
+		if (DEBUG_MODE) {
+			console.log("✅ Engine initialized (WebGL", engine.webGLVersion + ")");
+		}
 
 		handleLoad(engine, scene);
 
-		let listener: () => void;
-		window.addEventListener("resize", listener = () => {
-			engine.resize();
-		});
+		const resizeListener = () => engine.resize();
+		window.addEventListener("resize", resizeListener);
 
 		return () => {
 			scene.dispose();
 			engine.dispose();
-
-			window.removeEventListener("resize", listener);
+			window.removeEventListener("resize", resizeListener);
 		};
 	}, [canvasRef]);
 
 	async function handleLoad(engine: Engine, scene: Scene) {
 		try {
-			console.log("==============================================");
-			console.log("PHASE 4: Loading scene from Babylon Editor");
-			console.log("==============================================");
+			if (DEBUG_MODE) {
+				console.log("🧪 Creating test scene (scene loader disabled for debugging)");
+			}
 			
-			// FIRST: Test basic rendering before loading the scene
-			console.log("🧪 BASIC RENDERING TEST - Creating simple scene...");
-			const { MeshBuilder } = await import("@babylonjs/core/Meshes/meshBuilder");
-			const { StandardMaterial } = await import("@babylonjs/core/Materials/standardMaterial");
-			const { Color3 } = await import("@babylonjs/core/Maths/math.color");
-			const { UniversalCamera } = await import("@babylonjs/core/Cameras/universalCamera");
-			const { HemisphericLight } = await import("@babylonjs/core/Lights/hemisphericLight");
+			// Create minimal test scene
+			await createTestScene(scene);
 			
-			// Create a simple camera
-			const testCamera = new UniversalCamera("testCamera", new Vector3(0, 2, -10), scene);
-			testCamera.setTarget(Vector3.Zero());
-			scene.activeCamera = testCamera;
-			testCamera.attachControl();
-			console.log("✅ Test camera created at [0, 2, -10] looking at origin");
-			
-			// Create a simple light
-			const testLight = new HemisphericLight("testLight", new Vector3(0, 1, 0), scene);
-			testLight.intensity = 1;
-			console.log("✅ Test light created");
-			
-			// Create a simple box
-			const simpleBox = MeshBuilder.CreateBox("simpleBox", { size: 2 }, scene);
-			simpleBox.position = new Vector3(0, 0, 0);
-			const simpleMat = new StandardMaterial("simpleMat", scene);
-			simpleMat.diffuseColor = new Color3(1, 0, 0); // Red
-			simpleMat.emissiveColor = new Color3(1, 0, 0); // Bright red, self-lit
-			simpleBox.material = simpleMat;
-			console.log("✅ Simple red box created at origin");
-			
-			// Start rendering immediately
-			console.log("🔄 Starting test render loop...");
+			// Start render loop
 			engine.runRenderLoop(() => {
 				scene.render();
 			});
-			console.log("✅ Test render loop started");
-			console.log("🎥 Active camera:", scene.activeCamera?.name);
-			console.log("==============================================");
-			console.log("⚠️ STOPPING HERE - If you see a red box, basic rendering works!");
-			console.log("⚠️ Check the browser window now.");
-			console.log("==============================================");
+			
+			if (DEBUG_MODE) {
+				console.log("✅ Test scene initialized and rendering");
+			}
+			
+			// TODO: Re-enable scene loading from Babylon Editor
+			// Uncomment the following lines when ready to debug scene loader:
+			/*
+			const havok = await HavokPhysics();
+			await loadScene("./scene/", "config.json", scene, scriptsMap);
+			scene.enablePhysics(new Vector3(0, -981, 0), new HavokPlugin(true, havok));
+			if (scene.activeCamera) {
+				scene.activeCamera.attachControl();
+			}
+			const ground = scene.getMeshByName("ground");
+			const xrHelper = await WebXRDefaultExperience.CreateAsync(scene, {
+				floorMeshes: ground ? [ground] : [],
+				optionalFeatures: true,
+			});
+			xrHelper.baseExperience.onStateChangedObservable.add((state) => {
+				setIsInVR(state === 2);
+			});
+			*/
 			
 		} catch (error) {
-			console.error("Failed to initialize 3D scene:", error);
-			throw error; // Re-throw to be caught by error boundary
+			console.error("Failed to initialize scene:", error);
+			throw error;
 		}
 	}
 

@@ -1,63 +1,71 @@
 # Development Priorities
 
-**Last Updated**: November 9, 2025  
+**Last Updated**: November 9, 2025 (Post-VR Testing)  
 **Branch**: main  
 **Repository**: beabodocl-babylon
 
 ---
 
-## 🎯 Current Priority: VR Headset Testing
+## 🎯 Current Priority: Debug Scene Loading
 
-**Status**: Ready to Test  
-**Effort**: 1-2 hours  
-**Dependencies**: None (VR features implemented)
+**Status**: Blocking VR Testing  
+**Effort**: 2-4 hours  
+**Dependencies**: None
 
-### Why This Is Priority #1
+### Critical Issue - Scene Loading Disabled
 
-All VR features are implemented but untested on actual VR hardware:
-- ✅ VR strafing system implemented (`vrMovement.ts` script)
-- ✅ VR chat panel interaction implemented (`chatPanel.ts` script)
-- ✅ WebXR integration complete in `page.tsx`
-- ✅ Babylon Editor integration complete
-- ❌ Never tested on Quest 2/3 headset
+**Problem**: Scene loading from Babylon Editor currently disabled due to black screen issue.
+
+**Current Workaround**: Minimal test scene (red box) rendering to verify basic functionality.
+
+**Root Cause**: `loadScene()` from `babylonjs-editor-tools` failing to load assets properly. Basic Babylon.js rendering confirmed working in both desktop and VR.
+
+**Evidence**:
+- ✅ Basic rendering works (desktop & VR)
+- ✅ WebXR initialization successful
+- ✅ VR mode entry/exit functional
+- ✅ VR head tracking working
+- ⚠️ VR controllers visible but need refinement
+- ❌ Full scene loading disabled
 
 **Tasks**:
-1. Charge Quest 2/3 headset fully
-2. Run `npm run startup` to start with network access
-3. Open http://[YOUR-IP]:3000 in VR browser
-4. Enter VR mode and test:
-   - Left joystick movement (forward/back/strafe)
-   - Chat panel visibility and readability
-   - VR controller pointer interaction
-   - Message sending to agent API
-   - Performance and framerate
-5. Document any issues found
-6. Adjust movement speed/deadzone in Babylon Editor if needed
+1. Re-enable scene loading (remove return statement at `page.tsx` line ~148)
+2. Add detailed logging to `loadScene()` call
+3. Monitor browser console and network tab for asset loading failures
+4. Check file paths in `public/scene/` directory
+5. Verify `.babylonbinarymeshdata` files exist
+6. Test texture/environment map loading
+7. Validate `scripts/` directory structure
+8. Debug why assets fail to load
 
-### Quick Start Commands
-
-```powershell
-# Start development
-npm run dev
-
-# Start with network access (for VR testing)
-npm run startup
-
-# Test backend API
-cd C:\Users\b\src\babocument
-.\run-server.ps1 -Port 8000
-```
+**References**:
+- `VR_BLACK_SCREEN_ISSUE.md` - Complete debugging investigation
+- `HANDOFF_2025-11-09_VR_TEST.md` - VR testing session details
 
 ---
 
 ## 📋 Secondary Priorities
 
-### P2: Scene Enhancement in Babylon Editor
+### P2: VR Controller Refinement
 **Effort**: 2-3 hours  
-**Dependencies**: Babylon Editor integration (✅ complete), NavMesh (✅ complete)  
-**Status**: Ready to enhance
+**Dependencies**: Scene Loading (P1)  
+**Status**: Blocked by scene loading issue
 
-Now that editor integration and NavMesh are complete, we can visually enhance the scene.
+Once scene loading works, refine VR controller interaction.
+
+**Tasks**:
+1. Test controller pointer interaction with meshes
+2. Verify trigger/button input detection
+3. Adjust movement speed/deadzone in editor if needed
+4. Test chat panel interaction in VR
+5. Fine-tune pointer selection sensitivity
+
+### P3: Scene Enhancement in Babylon Editor
+**Effort**: 2-3 hours  
+**Dependencies**: Scene Loading (P1)  
+**Status**: Blocked by scene loading issue
+
+Once scene loads correctly, enhance visual quality.
 
 **Tasks**:
 1. Open `public/scene/` in Babylon Editor
@@ -68,25 +76,10 @@ Now that editor integration and NavMesh are complete, we can visually enhance th
 6. Define NavMesh obstacles for boundaries
 7. Test scene changes load correctly
 
-### P3: Chat Panel UI Improvements
-**Effort**: 3-4 hours  
-**Dependencies**: VR Testing (to validate readability)  
-**Status**: Ready after VR testing
-
-Enhance the chat panel based on VR testing feedback.
-
-**Tasks**:
-1. Test current UI readability in VR
-2. Adjust font sizes if needed
-3. Improve color contrast
-4. Add chat history persistence
-5. Add typing indicators
-6. Implement auto-scroll improvements
-
 ### P4: Performance Optimization
 **Effort**: 2-3 hours  
-**Dependencies**: VR Testing (to establish baseline)  
-**Status**: Ready after VR testing
+**Dependencies**: Scene Loading (P1), VR Testing (P2)  
+**Status**: Blocked by scene loading and VR testing
 
 Optimize performance based on VR testing results.
 
@@ -99,7 +92,49 @@ Optimize performance based on VR testing results.
 
 ---
 
-## ✅ Recently Completed
+## ✅ Recently Completed (November 9, 2025)
+
+### VR Testing Session - Basic Functionality Verified
+**Status**: ✅ Partial Success - Test Scene Works, Full Scene Blocked
+
+**Accomplishments**:
+- ✅ Identified root cause of black screen (scene loader, not rendering)
+- ✅ Created minimal test scene to verify basic rendering
+- ✅ Confirmed WebXR initialization works correctly
+- ✅ Verified VR mode entry/exit functional
+- ✅ Tested on Quest 2/3 headset - basic rendering confirmed
+- ✅ VR controllers detected and visible
+- ✅ Created comprehensive debugging documentation
+
+**Technical Debt Addressed**:
+- ✅ Removed unused imports from `page.tsx`
+- ✅ Extracted test scene creation to utility function
+- ✅ Added `NEXT_PUBLIC_DEBUG_MODE` environment variable
+- ✅ Reduced console logging (debug mode only)
+- ✅ Consolidated handoff documentation
+
+**Files Modified**:
+- `src/app/page.tsx` - Refactored, reduced from 148 to ~90 lines
+- `.env.example` - Added `NEXT_PUBLIC_DEBUG_MODE`
+- `VR_BLACK_SCREEN_ISSUE.md` - Complete investigation timeline
+- `HANDOFF_2025-11-09_VR_TEST.md` - VR testing session handoff
+
+**Known Issues**:
+- ❌ Scene loading from Babylon Editor currently disabled
+- ⚠️ VR controllers need refinement for optimal interaction
+
+**Next Steps**:
+1. Debug scene loader (P1 above)
+2. Re-enable full scene loading
+3. Test all VR features with full scene
+
+**Commits**: 
+- `e338fb3` - Debug VR black screen - isolated to scene loader
+- (Next) - Technical debt cleanup and consolidation
+
+---
+
+## ✅ Previously Completed
 
 ### NavMesh Collision Detection (Nov 9, 2025)
 **All Tasks Complete** - Collision boundaries working

@@ -6,10 +6,12 @@
 import { loadScene, scriptsDictionary, scriptAssetsCache, _applyScriptsForObject, _removeRegisteredScriptInstance, _preloadScriptsAssets } from "babylonjs-editor-tools";
 import * as scripts_chatPanel from "./scripts/chatPanel";
 import * as scripts_vrMovement from "./scripts/vrMovement";
+import * as scripts_navMesh from "./scripts/navMesh";
 
 export const scriptsMap = {
     "scripts/chatPanel.ts": scripts_chatPanel,
-	"scripts/vrMovement.ts": scripts_vrMovement
+	"scripts/vrMovement.ts": scripts_vrMovement,
+	"scripts/navMesh.ts": scripts_navMesh
 };
 
 export { loadScene, scriptsDictionary, scriptAssetsCache, _applyScriptsForObject, _removeRegisteredScriptInstance, _preloadScriptsAssets };

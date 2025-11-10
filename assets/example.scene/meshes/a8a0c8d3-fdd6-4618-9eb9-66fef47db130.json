@@ -68,7 +68,31 @@
             "metadata": {
                 "type": "Plane",
                 "size": 100,
-                "sideOrientation": 0
+                "sideOrientation": 0,
+                "scripts": [
+                    {
+                        "enabled": true,
+                        "key": "scripts/chatPanel.ts",
+                        "values": {
+                            "panelWidth": {
+                                "type": "number",
+                                "value": 1
+                            },
+                            "panelHeight": {
+                                "type": "number",
+                                "value": 1
+                            },
+                            "textureWidth": {
+                                "type": "number",
+                                "value": 512
+                            },
+                            "textureHeight": {
+                                "type": "number",
+                                "value": 512
+                            }
+                        }
+                    }
+                ]
             },
             "instances": [],
             "animations": [],
@@ -151,7 +175,31 @@
     "metadata": {
         "type": "Plane",
         "size": 100,
-        "sideOrientation": 0
+        "sideOrientation": 0,
+        "scripts": [
+            {
+                "enabled": true,
+                "key": "scripts/chatPanel.ts",
+                "values": {
+                    "panelWidth": {
+                        "type": "number",
+                        "value": 1
+                    },
+                    "panelHeight": {
+                        "type": "number",
+                        "value": 1
+                    },
+                    "textureWidth": {
+                        "type": "number",
+                        "value": 512
+                    },
+                    "textureHeight": {
+                        "type": "number",
+                        "value": 512
+                    }
+                }
+            }
+        ]
     },
     "basePoseMatrix": [
         1,

@@ -23,7 +23,28 @@
     "name": "vrMovementController",
     "id": "c652510f-c5d1-42a4-80b3-569e89bad1f6",
     "state": "",
-    "metadata": {},
+    "metadata": {
+        "scripts": [
+            {
+                "enabled": true,
+                "key": "scripts/vrMovement.ts",
+                "values": {
+                    "movementSpeed": {
+                        "type": "number",
+                        "value": 0
+                    },
+                    "deadzone": {
+                        "type": "number",
+                        "value": 0
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "value": false
+                    }
+                }
+            }
+        ]
+    },
     "type": "TransformNode",
     "uniqueId": 1762741141517,
     "localMatrix": [

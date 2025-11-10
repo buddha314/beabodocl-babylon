@@ -27,8 +27,6 @@ import "@babylonjs/core/Materials/standardMaterial";
 import { WebXRDefaultExperience } from "@babylonjs/core/XR/webXRDefaultExperience";
 import "@babylonjs/core/XR/features/WebXRDepthSensing";
 
-// VR Movement System
-import { VRMovementSystem } from "@/lib/vr/movement";
 import "@babylonjs/core/Helpers/sceneHelpers";
 
 import "@babylonjs/core/Rendering/depthRendererSceneComponent";
@@ -139,9 +137,15 @@ export default function Home() {
 
 				console.log("WebXR initialized successfully");
 
-				// Initialize VR Movement System for strafing controls
-				const vrMovement = new VRMovementSystem(scene, xrHelper);
-				console.log("VR Movement System initialized with strafing support");
+				// Initialize VR Movement Script if it exists in the scene
+				// The script stores itself in scene.metadata when it loads
+				const vrMovementScript = scene.metadata?.vrMovementScript;
+				if (vrMovementScript && typeof vrMovementScript.initializeWithXR === 'function') {
+					vrMovementScript.initializeWithXR(xrHelper);
+					console.log("✅ VR Movement Script initialized with WebXR");
+				} else {
+					console.warn("⚠️ VR Movement Script not found in scene - attach vrMovement.ts to a node in the editor");
+				}
 
 				// CRITICAL: Make sure the chat panel mesh is in the pointer selection meshes
 				if (xrHelper.pointerSelection) {

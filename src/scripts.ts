@@ -4,10 +4,12 @@
  */
 
 import { loadScene, scriptsDictionary, scriptAssetsCache, _applyScriptsForObject, _removeRegisteredScriptInstance, _preloadScriptsAssets } from "babylonjs-editor-tools";
-
+import * as scripts_vrMovement from "./scripts/vrMovement";
+import * as scripts_chatPanel from "./scripts/chatPanel";
 
 export const scriptsMap = {
-    
+    "scripts/vrMovement.ts": scripts_vrMovement,
+	"scripts/chatPanel.ts": scripts_chatPanel
 };
 
 export { loadScene, scriptsDictionary, scriptAssetsCache, _applyScriptsForObject, _removeRegisteredScriptInstance, _preloadScriptsAssets };
